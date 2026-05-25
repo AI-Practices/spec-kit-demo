@@ -31,7 +31,7 @@ export default function MonthPicker({
       <button
         type="button"
         onClick={prev}
-        className="px-3 py-1 text-sm font-medium border border-zinc-300 rounded hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700"
+        className="px-3 py-1 text-sm font-medium border border-zinc-300 rounded transition-colors hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-500"
         aria-label="Previous month"
       >
         &larr;
@@ -42,7 +42,7 @@ export default function MonthPicker({
       <button
         type="button"
         onClick={next}
-        className="px-3 py-1 text-sm font-medium border border-zinc-300 rounded hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700"
+        className="px-3 py-1 text-sm font-medium border border-zinc-300 rounded transition-colors hover:bg-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-500"
         aria-label="Next month"
       >
         &rarr;

@@ -106,7 +106,7 @@ export default function BudgetManager() {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
+            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
           >
             <option value="">Select a category</option>
             {CATEGORY_LABELS.map((cat) => (
@@ -131,7 +131,7 @@ export default function BudgetManager() {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             required
-            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
+            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
           />
           {errors?.amount && (
             <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.amount[0]}</p>
@@ -146,7 +146,7 @@ export default function BudgetManager() {
 
         <button
           type="submit"
-          className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-500"
         >
           {category && monthBudgets.some((b) => b.category === category) ? "Update Budget" : "Set Budget"}
         </button>
@@ -160,7 +160,7 @@ export default function BudgetManager() {
           {monthBudgets.map((budget) => (
             <div
               key={budget.id}
-              className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg dark:border-zinc-700"
+              className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
             >
               <div className="flex items-center gap-3">
                 <span className="inline-block px-2 py-0.5 text-xs font-medium bg-zinc-100 text-zinc-700 rounded dark:bg-zinc-700 dark:text-zinc-300">
@@ -174,14 +174,14 @@ export default function BudgetManager() {
                 <button
                   type="button"
                   onClick={() => handleEditBudget(budget)}
-                  className="text-xs font-medium text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
+                  className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200"
                 >
                   Edit
                 </button>
                 <button
                   type="button"
                   onClick={() => handleRemoveBudget(budget.category)}
-                  className="text-xs font-medium text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+                  className="text-xs font-medium text-red-500 transition-colors hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
                 >
                   Remove
                 </button>

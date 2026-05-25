@@ -31,13 +31,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <nav className="flex items-center gap-6 px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
-          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
+          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
             Dashboard
           </Link>
-          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
+          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
             Expenses
           </Link>
-          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
+          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
             Budgets
           </Link>
           <ThemeToggle />

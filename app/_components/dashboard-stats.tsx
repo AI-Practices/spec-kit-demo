@@ -51,7 +51,7 @@ export default function DashboardStats() {
 
       {allExpenses.length > 0 && (
         <>
-          <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700">
+          <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
             <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Total Spending</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{formatAmount(total)}</p>
           </div>

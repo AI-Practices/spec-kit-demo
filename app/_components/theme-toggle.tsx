@@ -64,7 +64,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={cycle}
-      className="ml-auto text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+      className="ml-auto text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
       aria-label={`Theme: ${theme}. Click to cycle.`}
     >
       {icons[theme]}

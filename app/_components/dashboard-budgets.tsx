@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
 import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
 import type { Budget, Expense } from "@/src/server/types";
+import Link from "next/link";
 import BudgetProgressBar from "@/app/_components/budget-progress-bar";
 
 const serverSnapshotBudgets: Budget[] = [];
@@ -59,7 +60,19 @@ export default function DashboardBudgets() {
   const month = getCurrentMonth();
   const summaries = computeSummaries(allBudgets, allExpenses, month);
 
-  if (summaries.length === 0) return null;
+  if (summaries.length === 0) {
+    return (
+      <div className="p-4 border border-zinc-200 rounded-lg dark:border-zinc-700">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          No budgets set for this month.{" "}
+          <Link href="/budgets" className="text-zinc-700 underline hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
+            Set a budget
+          </Link>{" "}
+          to track your spending.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -70,7 +83,7 @@ export default function DashboardBudgets() {
         {summaries.map((s) => (
           <div
             key={s.category}
-            className="p-3 border border-zinc-200 rounded-lg dark:border-zinc-700"
+            className="p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">

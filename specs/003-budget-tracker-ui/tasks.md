@@ -96,10 +96,10 @@ description: "Task list for Budget Tracker & UI Enhancement feature implementati
 
 ### Implementation for User Story 3
 
-- [ ] T016 [P] [US3] Refine spacing, typography, and card styling across all pages for a cohesive visual rhythm
-- [ ] T017 [P] [US3] Add smooth hover/focus transitions (color, opacity, transform) to all interactive elements
-- [ ] T018 [P] [US3] Polish empty states and loading placeholders across all components
-- [ ] T019 [US3] Verify and adjust visual consistency in both light and dark modes across all screens
+- [x] T016 [P] [US3] Refine spacing, typography, and card styling across all pages for a cohesive visual rhythm
+- [x] T017 [P] [US3] Add smooth hover/focus transitions (color, opacity, transform) to all interactive elements
+- [x] T018 [P] [US3] Polish empty states and loading placeholders across all components
+- [x] T019 [US3] Verify and adjust visual consistency in both light and dark modes across all screens
 
 **Checkpoint**: User Story 3 is complete — all pages share consistent modern styling with smooth interactions
 
