@@ -121,21 +121,21 @@ description: "Tasks for Expense Tracker feature implementation"
 
 ### Implementation Tasks
 
-- [ ] T019 [P] [US4] Update `app/globals.css` — configure Tailwind v4 dark variant to use class-based strategy (`@variant dark (&:where(.dark, .dark *))`) and define `dark:` CSS custom properties for all surfaces, borders, text, and error states used across the app
+- [x] T019 [P] [US4] Update `app/globals.css` — configure Tailwind v4 dark variant to use class-based strategy (`@variant dark (&:where(.dark, .dark *))`) and define `dark:` CSS custom properties for all surfaces, borders, text, and error states used across the app
 
-- [ ] T020 [P] [US4] Create theme-toggle client component in `app/_components/theme-toggle.tsx` — `'use client'` component that manages theme state (light/dark/system). On mount: reads persisted preference from localStorage, applies `.dark` class to `<html>` based on preference or system media query. Listens for `matchMedia('prefers-color-scheme: dark')` changes when in "system" mode. Exposes a UI toggle (three-state button or dropdown) in the nav bar. Persists choice to localStorage key `"theme"`.
+- [x] T020 [P] [US4] Create theme-toggle client component in `app/_components/theme-toggle.tsx` — `'use client'` component that manages theme state (light/dark/system). On mount: reads persisted preference from localStorage, applies `.dark` class to `<html>` based on preference or system media query. Listens for `matchMedia('prefers-color-scheme: dark')` changes when in "system" mode. Exposes a UI toggle (three-state button or dropdown) in the nav bar. Persists choice to localStorage key `"theme"`.
 
-- [ ] T021 [US4] Update `app/layout.tsx` — integrate `<ThemeToggle />` component into the navigation bar next to existing nav links
+- [x] T021 [US4] Update `app/layout.tsx` — integrate `<ThemeToggle />` component into the navigation bar next to existing nav links
 
-- [ ] T022 [P] [US4] Update `app/_components/add-expense-form.tsx` — add `dark:` Tailwind classes: form container border, input/select/textarea backgrounds and borders, label text, button background and hover, error message text and background
+- [x] T022 [P] [US4] Update `app/_components/add-expense-form.tsx` — add `dark:` Tailwind classes: form container border, input/select/textarea backgrounds and borders, label text, button background and hover, error message text and background
 
-- [ ] T023 [P] [US4] Update `app/_components/expense-list.tsx` — add `dark:` Tailwind classes: row container borders, amount/text colors, category badge background and text, delete button colors and hover
+- [x] T023 [P] [US4] Update `app/_components/expense-list.tsx` — add `dark:` Tailwind classes: row container borders, amount/text colors, category badge background and text, delete button colors and hover
 
-- [ ] T024 [P] [US4] Update `app/_components/dashboard-stats.tsx` — add `dark:` Tailwind classes: total card background and border, heading text, row container borders, amount/text colors
+- [x] T024 [P] [US4] Update `app/_components/dashboard-stats.tsx` — add `dark:` Tailwind classes: total card background and border, heading text, row container borders, amount/text colors
 
-- [ ] T025 [P] [US4] Update `app/_components/empty-state.tsx` — add `dark:` Tailwind classes: heading and description text, CTA button background and hover
+- [x] T025 [P] [US4] Update `app/_components/empty-state.tsx` — add `dark:` Tailwind classes: heading and description text, CTA button background and hover
 
-- [ ] T026 [US4] Update `app/page.tsx` and `app/expenses/page.tsx` — add `dark:` Tailwind classes to page-level structural elements (headings, wrapper divs)
+- [x] T026 [US4] Update `app/page.tsx` and `app/expenses/page.tsx` — add `dark:` Tailwind classes to page-level structural elements (headings, wrapper divs)
 
 ---
 
@@ -143,11 +143,11 @@ description: "Tasks for Expense Tracker feature implementation"
 
 **Purpose**: Verify quality and fix any issues.
 
-- [ ] T016 Run `npm run lint` and fix any ESLint errors
+- [x] T016 Run `npm run lint` and fix any ESLint errors
 
-- [ ] T017 Run `npm run build` and fix any build errors
+- [x] T017 Run `npm run build` and fix any build errors
 
-- [ ] T018 Verify the app runs with `npm run dev` and all 3 user stories work end-to-end
+- [x] T018 Verify the app runs with `npm run dev` and all 3 user stories work end-to-end
 
 ---
 
