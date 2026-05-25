@@ -103,9 +103,9 @@ description: "Tasks for Expense Tracker feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T014 [P] [US3] Create delete-expense server action in `src/server/actions/delete-expense.ts` — `'use server'` function that takes `{ id: string }`, validates with Zod schema, returns `ActionResult<{ id: string }>`
+- [x] T014 [P] [US3] Create delete-expense server action in `src/server/actions/delete-expense.ts` — `'use server'` function that takes `{ id: string }`, validates with Zod schema, returns `ActionResult<{ id: string }>`
 
-- [ ] T015 [US3] Integrate delete in `app/_components/expense-list.tsx` — add a "Delete" button per expense row. On click: calls delete-expense server action → on success, removes expense from localStorage via `removeExpense()` → list re-renders without the deleted expense. Show a brief confirmation before deleting (optional but good UX).
+- [x] T015 [US3] Integrate delete in `app/_components/expense-list.tsx` — add a "Delete" button per expense row. On click: calls delete-expense server action → on success, removes expense from localStorage via `removeExpense()` → list re-renders without the deleted expense. Show a brief confirmation before deleting (optional but good UX).
 
 **Checkpoint**: All user stories functional.
 

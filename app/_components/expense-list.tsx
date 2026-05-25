@@ -1,6 +1,8 @@
 'use client';
 
-import { getExpenses } from "@/src/lib/storage";
+import { useState } from "react";
+import { getExpenses, removeExpense } from "@/src/lib/storage";
+import { deleteExpense as deleteExpenseAction } from "@/src/server/actions/delete-expense";
 import type { Expense } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
 
@@ -9,9 +11,23 @@ function formatAmount(cents: number): string {
 }
 
 export default function ExpenseList() {
-  const expenses: Expense[] = getExpenses().sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  const [expenses, setExpenses] = useState<Expense[]>(() =>
+    getExpenses().sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
   );
+
+  async function handleDelete(id: string) {
+    const result = await deleteExpenseAction({ id });
+    if (result.success) {
+      removeExpense(id);
+      setExpenses(
+        getExpenses().sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+      );
+    }
+  }
 
   if (expenses.length === 0) {
     return <EmptyState />;
@@ -38,6 +54,12 @@ export default function ExpenseList() {
               {expense.description}
             </span>
           </div>
+          <button
+            onClick={() => handleDelete(expense.id)}
+            className="px-2 py-1 text-xs font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
+          >
+            Delete
+          </button>
         </div>
       ))}
     </div>
