@@ -37,6 +37,9 @@ export default function RootLayout({
           <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
             Expenses
           </Link>
+          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
+            Budgets
+          </Link>
           <ThemeToggle />
         </nav>
         <main className="flex-1">{children}</main>

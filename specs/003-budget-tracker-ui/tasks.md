@@ -60,12 +60,12 @@ description: "Task list for Budget Tracker & UI Enhancement feature implementati
 
 ### Implementation for User Story 1
 
-- [ ] T006 [P] [US1] Create `set-budget` server action in `src/server/actions/set-budget.ts`
-- [ ] T007 [P] [US1] Create `remove-budget` server action in `src/server/actions/remove-budget.ts`
-- [ ] T008 [P] [US1] Create month-picker component in `app/_components/month-picker.tsx`
-- [ ] T009 [US1] Create budget-manager component in `app/_components/budget-manager.tsx` (depends on T006, T007, T008)
-- [ ] T010 [US1] Create budgets page route at `app/budgets/page.tsx` (depends on T009)
-- [ ] T011 [US1] Add Budgets nav link in `app/layout.tsx` (depends on T010)
+- [x] T006 [P] [US1] Create `set-budget` server action in `src/server/actions/set-budget.ts`
+- [x] T007 [P] [US1] Create `remove-budget` server action in `src/server/actions/remove-budget.ts`
+- [x] T008 [P] [US1] Create month-picker component in `app/_components/month-picker.tsx`
+- [x] T009 [US1] Create budget-manager component in `app/_components/budget-manager.tsx` (depends on T006, T007, T008)
+- [x] T010 [US1] Create budgets page route at `app/budgets/page.tsx` (depends on T009)
+- [x] T011 [US1] Add Budgets nav link in `app/layout.tsx` (depends on T010)
 
 **Checkpoint**: User Story 1 is fully functional — budgets can be set, edited, removed, and persist across refreshes
 
