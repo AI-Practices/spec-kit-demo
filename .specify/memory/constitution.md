@@ -1,50 +1,127 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+------------------
+Version change: N/A (template) → 1.0.0
+Modified principles: N/A (all new)
+Added sections:
+  - I. Specification-First Development
+  - II. Clean & Modular Architecture
+  - III. TypeScript Discipline
+  - IV. Convention Over Configuration
+  - V. Progressive Enhancement
+  - Technology Stack & Constraints
+  - Development Workflow
+Removed sections: none
+Templates requiring updates:
+  ✅ .specify/templates/plan-template.md — no changes needed (generic reference)
+  ✅ .specify/templates/spec-template.md — no changes needed
+  ✅ .specify/templates/tasks-template.md — no changes needed
+  ✅ .opencode/commands/ — no CLAUDE-specific references found
+Follow-up TODOs: none
+-->
+
+# Spec Kit Demo Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Specification-First Development
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Every feature MUST begin with a specification in `specs/<NNN-feature>/spec.md`.
+Code changes MUST follow the full SDD cycle: specify → plan → tasks → implement.
+No code is written before its spec is approved. This ensures every change is
+motivated, scoped, and reviewed before implementation begins.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Clean & Modular Code
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+Components, layouts, and services MUST be organized into small,
+single-responsibility modules. Separation of concerns between UI, data fetching,
+and business logic is required. Each module SHOULD have a clear public interface
+and hide internal implementation details. Duplication MUST be extracted into
+shared modules rather than copy-pasted.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. TypeScript Discipline
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+All APIs, component props, state shapes, and function signatures MUST have
+explicit TypeScript types. `any` MUST NOT be used — prefer `unknown` with type
+narrowing where types cannot be predetermined. Strict mode is enabled in
+`tsconfig.json` and MUST remain enabled.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Convention Over Configuration
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Code MUST use the established stack consistently:
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- **Next.js 16** with App Router (`app/` directory layout). Pages Router is not
+  used. All route handlers, layouts, and pages follow App Router conventions.
+  Read `node_modules/next/dist/docs/` before writing Next.js code — version 16
+  contains breaking changes from earlier versions.
+- **React 19** Server Components by default; `'use client'` only when
+  interactivity, browser APIs, or React hooks are required.
+- **Tailwind CSS v4** via `@import "tailwindcss"` in `globals.css`. Do NOT use
+  the legacy `@tailwind` directive syntax.
+- **TypeScript 5** with `bundler` module resolution.
+- **ESLint 9** with flat config (`eslint.config.mjs`) — run `npm run lint`
+  before committing.
+
+### V. Progressive Enhancement
+
+Features build incrementally by user story priority (P1 → P2 → P3). Each user
+story MUST be independently testable and deliverable as a viable increment.
+Parallel work on different stories is allowed once foundational phase is
+complete. No story SHOULD depend on a lower-priority story.
+
+## Technology Stack & Constraints
+
+**Framework**: Next.js 16.2.6 (App Router, Turbopack bundler). Custom `webpack`
+config in `next.config` will fail the build — use Turbopack-native config or
+the top-level `turbopack` key.
+
+**UI**: React 19.2.4 with Tailwind CSS v4 via PostCSS (`@tailwindcss/postcss`
+plugin). Theme tokens defined in CSS using `@theme inline { ... }` blocks.
+
+**Language**: TypeScript 5 (strict). Path alias `@/*` → `./*`.
+
+**Linting**: ESLint 9 flat config with `core-web-vitals` + `typescript` presets.
+
+**No test framework** is currently configured. When tests are added, they SHOULD
+be placed in a `tests/` directory mirroring the source structure.
+
+**No backend or database** — this is a frontend-only application. All data is
+static or fetched from external APIs.
+
+## Development Workflow
+
+1. **Specify** — describe the feature in natural language via `/speckit.specify`.
+   The spec MUST focus on WHAT users need and WHY, not HOW to implement.
+   Technology-agnostic, business-facing language.
+
+2. **Plan** — generate the technical plan via `/speckit.plan`. The plan MUST
+   pass the Constitution Check gate before proceeding. All unclear technical
+   decisions MUST be resolved (NEEDS CLARIFICATION → research), not deferred.
+
+3. **Tasks** — break the plan into executable tasks via `/speckit.tasks`. Tasks
+   MUST be organized by user story with clear dependencies.
+
+4. **Implement** — execute tasks via `/speckit.implement`. Setup before core.
+   Tests before code (if tests exist). Core before integration. Each phase
+   validated before the next.
+
+Review gates between each step are mandatory. Spec and plan MUST be reviewed
+and approved before the next phase begins.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+The Constitution supersedes all other development practices and guidelines.
+Amendments require:
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+- **MAJOR** (backward-incompatible governance changes): documented rationale,
+  team review, and migration plan.
+- **MINOR** (new principles or materially expanded guidance): documented
+  rationale.
+- **PATCH** (clarifications, wording, typo fixes): no approval needed but MUST
+  be recorded.
+
+All PRs and code reviews MUST verify compliance with this constitution.
+Complexity that violates a principle MUST be justified in the Complexity
+Tracking section of the implementation plan.
+
+**Version**: 1.0.0 | **Ratified**: 2026-05-25 | **Last Amended**: 2026-05-25
