@@ -13,7 +13,7 @@ Key Next.js 16 changes (see docs for full list):
 <!-- END:nextjs-agent-rules -->
 
 <!-- SPECKIT START -->
-The current implementation plan (from `/speckit.plan`) lives in `specs/<NNN-feature>/plan.md`.
+The current implementation plan lives in `specs/001-expense-tracker/plan.md`.
 Read it before making code changes.
 <!-- SPECKIT END -->
 
