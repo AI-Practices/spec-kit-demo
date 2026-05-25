@@ -1,9 +1,9 @@
-import { getPerson } from "@/src/server/actions/persons";
-import MonthlyGrid from "@/app/_components/monthly-grid";
-import PersonNav from "@/app/_components/person-nav";
 import { notFound } from "next/navigation";
+import { getPerson } from "@/src/server/actions/persons";
+import DebitForm from "@/app/_components/debit-form";
+import PersonNav from "@/app/_components/person-nav";
 
-export default async function PersonDetailPage({
+export default async function DebitsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -19,8 +19,8 @@ export default async function PersonDetailPage({
 
   return (
     <div>
-      <PersonNav personId={person.id} personName={person.name} activeTab="credits" />
-      <MonthlyGrid personId={person.id} personName={person.name} />
+      <PersonNav personId={person.id} personName={person.name} activeTab="debits" />
+      <DebitForm personId={person.id} personName={person.name} />
     </div>
   );
 }

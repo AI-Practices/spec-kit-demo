@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/src/server/db";
-import { createCreditSchema, monthlyCreditsSchema } from "@/src/server/schemas/wallet";
+import { createCreditSchema, createDebitSchema, monthlyCreditsSchema } from "@/src/server/schemas/wallet";
 import type { ActionResult, WalletTransaction } from "@/src/server/types";
 import { revalidatePath } from "next/cache";
 
@@ -71,6 +71,46 @@ export async function createCredit(
     return {
       success: false,
       errors: { _form: [err instanceof Error ? err.message : "Failed to create credit"] },
+    };
+  }
+}
+
+export async function createDebit(
+  input: unknown
+): Promise<ActionResult<WalletTransaction>> {
+  const parsed = createDebitSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      errors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
+  }
+  try {
+    const userId = await ensureUser();
+    const person = await prisma.person.findUnique({
+      where: { id: parsed.data.personId, userId },
+    });
+    if (!person) {
+      return { success: false, errors: { _form: ["Person not found"] } };
+    }
+    const tx = await prisma.walletTransaction.create({
+      data: {
+        userId,
+        personId: parsed.data.personId,
+        type: "debit",
+        amount: parsed.data.amount,
+        date: new Date(parsed.data.date),
+        notes: parsed.data.notes,
+      },
+    });
+    revalidatePath(`/persons/${parsed.data.personId}`);
+    revalidatePath(`/persons/${parsed.data.personId}/debits`);
+    revalidatePath("/persons");
+    return { success: true, data: serializeTx(tx) };
+  } catch (err) {
+    return {
+      success: false,
+      errors: { _form: [err instanceof Error ? err.message : "Failed to create debit"] },
     };
   }
 }

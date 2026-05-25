@@ -68,9 +68,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T022 [US2] Create debit entry server action in `src/server/actions/wallet.ts` (createDebit — requires notes, allows negative balance)
-- [ ] T023 [US2] Create `app/_components/debit-form.tsx` component (debit form with amount, date, notes fields; notes required validation)
-- [ ] T024 [US2] Create `app/persons/[id]/debits/page.tsx` page (debit entry route)
+- [x] T022 [US2] Create debit entry server action in `src/server/actions/wallet.ts` (createDebit — requires notes, allows negative balance)
+- [x] T023 [US2] Create `app/_components/debit-form.tsx` component (debit form with amount, date, notes fields; notes required validation)
+- [x] T024 [US2] Create `app/persons/[id]/debits/page.tsx` page (debit entry route)
 
 **Checkpoint**: User Story 2 is fully functional — debits can be recorded against any person, balance updates, overdraft allowed
 
