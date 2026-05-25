@@ -70,6 +70,14 @@ export interface LegacyBudget {
   updatedAt: string;
 }
 
+export interface PersonSummary {
+  person: PersonWithBalance;
+  totalCredited: number;
+  totalDebited: number;
+  balance: number;
+  transactions: WalletTransaction[];
+}
+
 export type ActionResult<T> =
   | { success: true; data: T }
   | { success: false; errors: Record<string, string[]> };

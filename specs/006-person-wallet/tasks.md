@@ -84,10 +84,10 @@
 
 ### Implementation for User Story 3
 
-- [ ] T025 [US3] Create summary and history query in `src/server/actions/wallet.ts` (getPersonSummary — aggregates credits, debits, balance; returns transaction list)
-- [ ] T026 [US3] Create transaction delete server action in `src/server/actions/wallet.ts` (deleteTransaction — removes individual credit or debit, per FR-015)
-- [ ] T027 [US3] Create `app/_components/person-summary.tsx` component (shows totals, balance, transaction list with delete button per row, empty state for no transactions)
-- [ ] T028 [US3] Create `app/persons/[id]/summary/page.tsx` page (summary route)
+- [x] T025 [US3] Create summary and history query in `src/server/actions/wallet.ts` (getPersonSummary — aggregates credits, debits, balance; returns transaction list)
+- [x] T026 [US3] Create transaction delete server action in `src/server/actions/wallet.ts` (deleteTransaction — removes individual credit or debit, per FR-015)
+- [x] T027 [US3] Create `app/_components/person-summary.tsx` component (shows totals, balance, transaction list with delete button per row, empty state for no transactions)
+- [x] T028 [US3] Create `app/persons/[id]/summary/page.tsx` page (summary route)
 
 **Checkpoint**: User Story 3 is fully functional — summary and transaction history viewable per person, individual transactions deletable
 

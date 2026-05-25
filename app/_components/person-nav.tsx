@@ -3,12 +3,13 @@ import Link from "next/link";
 interface PersonNavProps {
   personId: string;
   personName: string;
-  activeTab: "credits" | "debits";
+  activeTab: "credits" | "debits" | "summary";
 }
 
 const tabs = [
   { key: "credits", label: "Monthly Credits", href: (id: string) => `/persons/${id}` },
   { key: "debits", label: "Record Debit", href: (id: string) => `/persons/${id}/debits` },
+  { key: "summary", label: "Summary", href: (id: string) => `/persons/${id}/summary` },
 ] as const;
 
 export default function PersonNav({ personId, personName, activeTab }: PersonNavProps) {
