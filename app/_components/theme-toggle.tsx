@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark" | "system";
 
@@ -22,23 +23,27 @@ function applyTheme(theme: Theme): void {
   document.documentElement.classList.toggle("dark", resolved === "dark");
 }
 
+function subscribeToThemeChanges(callback: () => void): () => void {
+  window.addEventListener("storage", callback);
+  window.addEventListener("theme-change", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("theme-change", callback);
+  };
+}
+
+function getThemeSnapshot(): Theme {
+  return getStoredTheme() ?? "system";
+}
+
+function getThemeServerSnapshot(): Theme {
+  return "system";
+}
+
 export default function ThemeToggle() {
-  const [theme, setThemeState] = useState<Theme>("system");
-  const [mounted, setMounted] = useState(false);
+  const theme = useSyncExternalStore(subscribeToThemeChanges, getThemeSnapshot, getThemeServerSnapshot);
 
   useEffect(() => {
-    const stored = getStoredTheme();
-    if (stored) {
-      setThemeState(stored);
-      applyTheme(stored);
-    } else {
-      applyTheme("system");
-    }
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
     applyTheme(theme);
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
@@ -49,20 +54,15 @@ export default function ThemeToggle() {
     };
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
-  }, [theme, mounted]);
-
-  const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
-    try {
-      localStorage.setItem("theme", next);
-    } catch {}
-  }, []);
+  }, [theme]);
 
   const cycle = useCallback(() => {
     const order: Theme[] = ["light", "dark", "system"];
     const idx = order.indexOf(theme);
-    setTheme(order[(idx + 1) % order.length]);
-  }, [theme, setTheme]);
+    const next = order[(idx + 1) % order.length];
+    try { localStorage.setItem("theme", next); } catch {}
+    window.dispatchEvent(new CustomEvent("theme-change"));
+  }, [theme]);
 
   const icons: Record<Theme, string> = {
     light: "☀",
@@ -75,9 +75,9 @@ export default function ThemeToggle() {
       type="button"
       onClick={cycle}
       className="ml-auto text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-      aria-label={`Theme: ${mounted ? theme : "system"}. Click to cycle.`}
+      aria-label={`Theme: ${theme}. Click to cycle.`}
     >
-      {mounted ? icons[theme] : "◐"}
+      {icons[theme]}
     </button>
   );
 }
