@@ -3,11 +3,11 @@
 import { useSyncExternalStore, useRef } from "react";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
 import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
-import type { Budget, Expense } from "@/src/server/types";
+import type { LegacyBudget, Expense } from "@/src/server/types";
 import Link from "next/link";
 import BudgetProgressBar from "@/app/_components/budget-progress-bar";
 
-const serverSnapshotBudgets: Budget[] = [];
+const serverSnapshotBudgets: LegacyBudget[] = [];
 const serverSnapshotExpenses: Expense[] = [];
 
 function formatAmount(cents: number): string {
@@ -19,7 +19,7 @@ function getCurrentMonth(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
 
-function computeSummaries(budgets: Budget[], expenses: Expense[], month: string) {
+function computeSummaries(budgets: LegacyBudget[], expenses: Expense[], month: string) {
   const monthExpenses = expenses.filter((e) => e.date.startsWith(month));
 
   return budgets
@@ -45,7 +45,7 @@ function computeSummaries(budgets: Budget[], expenses: Expense[], month: string)
 }
 
 export default function DashboardBudgets() {
-  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
+  const budgetsRef = useRef<LegacyBudget[]>(serverSnapshotBudgets);
   const allBudgets = useSyncExternalStore(
     subscribeBudgets,
     () => {

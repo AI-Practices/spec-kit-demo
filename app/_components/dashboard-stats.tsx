@@ -3,12 +3,12 @@
 import { useSyncExternalStore, useRef } from "react";
 import { getExpenses, subscribe } from "@/src/lib/storage";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
-import type { Expense, Budget } from "@/src/server/types";
+import type { Expense, LegacyBudget } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
 import DashboardBudgets from "@/app/_components/dashboard-budgets";
 
 const serverSnapshotExpenses: Expense[] = [];
-const serverSnapshotBudgets: Budget[] = [];
+const serverSnapshotBudgets: LegacyBudget[] = [];
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
@@ -31,7 +31,7 @@ export default function DashboardStats() {
     () => serverSnapshotExpenses
   );
 
-  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
+  const budgetsRef = useRef<LegacyBudget[]>(serverSnapshotBudgets);
   const allBudgets = useSyncExternalStore(
     subscribeBudgets,
     () => {

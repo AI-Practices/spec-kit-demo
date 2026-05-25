@@ -24,15 +24,15 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 Write complete `prisma/schema.prisma` with all entities: User, Person, WalletTransaction, Expense, Category, Budget (from data-model.md)
-- [ ] T005 Run `prisma migrate dev --name init` to create PostgreSQL schema and generate Prisma client
-- [ ] T006 [P] Create Prisma client singleton in `src/server/db.ts` (globalThis pattern)
-- [ ] T007 [P] Create Person and WalletTransaction types in `src/server/types.ts`
-- [ ] T008 Create person Zod schemas in `src/server/schemas/person.ts` (name validation, create/update schemas)
-- [ ] T009 Create wallet transaction Zod schemas in `src/server/schemas/wallet.ts` (credit, debit, monthly query schemas)
-- [ ] T010 Update expense Zod schemas in `src/server/schemas/expense.ts` to reference Category ID instead of enum string
-- [ ] T011 Create localStorage → PostgreSQL migration script in `src/lib/migration.ts` (reads localStorage JSON export, validates, inserts via Prisma)
-- [ ] T012 Create `scripts/migrate-from-localstorage.ts` runner that executes migration and logs results
+- [x] T004 Write complete `prisma/schema.prisma` with all entities: User, Person, WalletTransaction, Expense, Category, Budget (from data-model.md)
+- [x] T005 Run `prisma migrate dev --name init` to create PostgreSQL schema and generate Prisma client
+- [x] T006 [P] Create Prisma client singleton in `src/server/db.ts` (globalThis pattern)
+- [x] T007 [P] Create Person and WalletTransaction types in `src/server/types.ts`
+- [x] T008 Create person Zod schemas in `src/server/schemas/person.ts` (name validation, create/update schemas)
+- [x] T009 Create wallet transaction Zod schemas in `src/server/schemas/wallet.ts` (credit, debit, monthly query schemas)
+- [x] T010 Update expense Zod schemas in `src/server/schemas/expense.ts` to reference Category ID instead of enum string
+- [x] T011 Create localStorage → PostgreSQL migration script in `src/lib/migration.ts` (reads localStorage JSON export, validates, inserts via Prisma)
+- [x] T012 Create `scripts/migrate-from-localstorage.ts` runner that executes migration and logs results
 
 **Checkpoint**: Foundation ready — database, Prisma, types, schemas, and migration script are all in place
 

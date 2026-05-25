@@ -1,16 +1,16 @@
-import type { Budget } from "@/src/server/types";
+import type { LegacyBudget } from "@/src/server/types";
 
 const STORAGE_KEY = "budgets";
 const listeners = new Set<() => void>();
 
-let cached: { raw: string | null; data: Budget[] } | null = null;
+let cached: { raw: string | null; data: LegacyBudget[] } | null = null;
 
 export function subscribe(listener: () => void): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }
 
-export function getBudgets(): Budget[] {
+export function getBudgets(): LegacyBudget[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (cached && cached.raw === raw) return cached.data;
@@ -23,7 +23,7 @@ export function getBudgets(): Budget[] {
       cached = { raw, data: [] };
       return [];
     }
-    const data = parsed as Budget[];
+    const data = parsed as LegacyBudget[];
     cached = { raw, data };
     return data;
   } catch {
@@ -32,7 +32,7 @@ export function getBudgets(): Budget[] {
   }
 }
 
-export function saveBudgets(budgets: Budget[]): void {
+export function saveBudgets(budgets: LegacyBudget[]): void {
   try {
     const raw = JSON.stringify(budgets);
     localStorage.setItem(STORAGE_KEY, raw);
@@ -46,7 +46,7 @@ export function saveBudgets(budgets: Budget[]): void {
   }
 }
 
-export function setBudget(input: Budget): Budget {
+export function setBudget(input: LegacyBudget): LegacyBudget {
   const budgets = getBudgets();
   const idx = budgets.findIndex(
     (b) => b.category === input.category && b.month === input.month,

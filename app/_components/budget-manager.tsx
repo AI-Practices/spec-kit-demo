@@ -7,14 +7,14 @@ import { removeBudget as removeBudgetAction } from "@/src/server/actions/remove-
 import { getBudgets, setBudget as saveBudget, removeBudget as removeBudgetFromStorage, subscribe } from "@/src/lib/budget-storage";
 import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
 import { CATEGORY_LABELS } from "@/src/server/types";
-import type { Budget, Expense } from "@/src/server/types";
+import type { LegacyBudget, Expense } from "@/src/server/types";
 import MonthPicker from "@/app/_components/month-picker";
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-const serverSnapshotBudgets: Budget[] = [];
+const serverSnapshotBudgets: LegacyBudget[] = [];
 const serverSnapshotExpenses: Expense[] = [];
 
 function getCurrentYearMonth(): { year: number; month: number } {
@@ -33,7 +33,7 @@ export default function BudgetManager() {
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
-  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
+  const budgetsRef = useRef<LegacyBudget[]>(serverSnapshotBudgets);
   const allBudgets = useSyncExternalStore(
     subscribe,
     () => {
@@ -80,7 +80,7 @@ export default function BudgetManager() {
     }
   }
 
-  async function handleEditBudget(budget: Budget) {
+  async function handleEditBudget(budget: LegacyBudget) {
     setCategory(budget.category);
     setAmount(String(budget.amount));
   }
