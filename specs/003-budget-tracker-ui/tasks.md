@@ -79,10 +79,10 @@ description: "Task list for Budget Tracker & UI Enhancement feature implementati
 
 ### Implementation for User Story 2
 
-- [ ] T012 [P] [US2] Create budget-progress-bar component in `app/_components/budget-progress-bar.tsx`
-- [ ] T013 [US2] Create dashboard-budgets component in `app/_components/dashboard-budgets.tsx` (depends on T012)
-- [ ] T014 [US2] Update dashboard-stats to embed budget section in `app/_components/dashboard-stats.tsx`
-- [ ] T015 [US2] Wire budget reactivity so dashboard re-renders when budgets or expenses change
+- [x] T012 [P] [US2] Create budget-progress-bar component in `app/_components/budget-progress-bar.tsx`
+- [x] T013 [US2] Create dashboard-budgets component in `app/_components/dashboard-budgets.tsx` (depends on T012)
+- [x] T014 [US2] Update dashboard-stats to embed budget section in `app/_components/dashboard-stats.tsx`
+- [x] T015 [US2] Wire budget reactivity so dashboard re-renders when budgets or expenses change
 
 **Checkpoint**: User Story 2 is fully functional — dashboard shows budget progress bars that update with expenses
 
