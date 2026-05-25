@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { addExpense as addExpenseAction } from "@/src/server/actions/add-expense";
-import { addExpense as addExpenseToStorage } from "@/src/lib/storage";
 import { CATEGORY_LABELS } from "@/src/server/types";
 import type { Category } from "@/src/server/types";
 
@@ -12,11 +11,9 @@ export default function AddExpenseForm({
   onExpenseAdded?: () => void;
 }) {
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
-  const [quotaError, setQuotaError] = useState<string | null>(null);
 
   async function handleSubmit(formData: FormData) {
     setErrors(null);
-    setQuotaError(null);
 
     const amount = parseInt(formData.get("amount") as string, 10);
     const date = formData.get("date") as string;
@@ -27,13 +24,6 @@ export default function AddExpenseForm({
 
     if (!result.success) {
       setErrors(result.errors);
-      return;
-    }
-
-    try {
-      addExpenseToStorage(result.data);
-    } catch (e) {
-      setQuotaError((e as Error).message);
       return;
     }
 
@@ -50,12 +40,6 @@ export default function AddExpenseForm({
       action={handleSubmit}
       className="space-y-4 mb-8 p-4 border border-zinc-200 rounded-lg dark:border-zinc-700"
     >
-      {quotaError && (
-        <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded dark:bg-red-900/30 dark:text-red-400">
-          {quotaError}
-        </p>
-      )}
-
       <div>
         <label htmlFor="amount" className="block text-sm font-medium mb-1 dark:text-zinc-300">
           Amount (cents)

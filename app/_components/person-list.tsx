@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createPerson, getPersons } from "@/src/server/actions/persons";
 import type { PersonWithBalance } from "@/src/server/types";
@@ -30,17 +30,12 @@ export default function PersonList() {
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
-  const fetchPersons = useCallback(async () => {
-    const result = await getPersons();
-    if (result.success) {
-      setPersons(result.data);
-    }
-    setLoading(false);
-  }, []);
-
   useEffect(() => {
-    fetchPersons();
-  }, [fetchPersons]);
+    getPersons().then((result) => {
+      if (result.success) setPersons(result.data);
+      setLoading(false);
+    });
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +46,8 @@ export default function PersonList() {
       return;
     }
     setName("");
-    await fetchPersons();
+    const refreshed = await getPersons();
+    if (refreshed.success) setPersons(refreshed.data);
   }
 
   if (loading) {

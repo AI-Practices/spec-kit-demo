@@ -1,13 +1,13 @@
 'use client';
 
-import { useSyncExternalStore, useRef } from "react";
-import { getExpenses, subscribe } from "@/src/lib/storage";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { getExpenses } from "@/src/server/actions/get-expenses";
+import { getPersons } from "@/src/server/actions/persons";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
-import type { Expense, LegacyBudget } from "@/src/server/types";
+import type { Expense, PersonWithBalance, LegacyBudget } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
 import DashboardBudgets from "@/app/_components/dashboard-budgets";
 
-const serverSnapshotExpenses: Expense[] = [];
 const serverSnapshotBudgets: LegacyBudget[] = [];
 
 function formatAmount(cents: number): string {
@@ -20,46 +20,74 @@ function getCurrentMonth(): string {
 }
 
 export default function DashboardStats() {
-  const expensesRef = useRef<Expense[]>(serverSnapshotExpenses);
-  const allExpenses = useSyncExternalStore(
-    subscribe,
-    () => {
-      const next = getExpenses();
-      if (next !== expensesRef.current) expensesRef.current = next;
-      return expensesRef.current;
-    },
-    () => serverSnapshotExpenses
-  );
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [persons, setPersons] = useState<PersonWithBalance[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const budgetsRef = useRef<LegacyBudget[]>(serverSnapshotBudgets);
+  useEffect(() => {
+    Promise.all([getExpenses(), getPersons()]).then(([expResult, personResult]) => {
+      if (expResult.success) setExpenses(expResult.data);
+      if (personResult.success) setPersons(personResult.data);
+      setLoading(false);
+    });
+  }, []);
+
   const allBudgets = useSyncExternalStore(
     subscribeBudgets,
-    () => {
-      const next = getBudgets();
-      if (next !== budgetsRef.current) budgetsRef.current = next;
-      return budgetsRef.current;
-    },
-    () => serverSnapshotBudgets
+    () => getBudgets(),
+    () => serverSnapshotBudgets,
   );
 
   const hasBudgetsForMonth = allBudgets.some((b) => b.month === getCurrentMonth());
 
-  if (allExpenses.length === 0 && !hasBudgetsForMonth) {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <p className="text-zinc-500 dark:text-zinc-400">Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (expenses.length === 0 && !hasBudgetsForMonth && persons.length === 0) {
     return <EmptyState />;
   }
 
-  const total = allExpenses.reduce((sum, e) => sum + e.amount, 0);
+  const total = expenses.reduce((sum, e) => sum + e.amount, 0);
 
-  const sorted = [...allExpenses].sort(
+  const sorted = [...expenses].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
   const recent = sorted.slice(0, 5);
+
+  const totalWalletBalance = persons.reduce((sum, p) => sum + p.balance, 0);
 
   return (
     <div className="space-y-6">
       <DashboardBudgets />
 
-      {allExpenses.length > 0 && (
+      {persons.length > 0 && (
+        <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
+          <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Person Wallet</p>
+          <div className="flex items-baseline gap-4">
+            <div>
+              <p className="text-xs text-zinc-400 dark:text-zinc-500">Persons</p>
+              <p className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{persons.length}</p>
+            </div>
+            <div>
+              <p className="text-xs text-zinc-400 dark:text-zinc-500">Total Balance</p>
+              <p className={`text-xl font-bold tabular-nums ${
+                totalWalletBalance >= 0
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : "text-red-600 dark:text-red-400"
+              }`}>
+                {formatAmount(totalWalletBalance)}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {expenses.length > 0 && (
         <>
           <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
             <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Total Spending</p>

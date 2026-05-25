@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { getPersonSummary, deleteTransaction } from "@/src/server/actions/wallet";
 import type { PersonSummary as PersonSummaryType } from "@/src/server/types";
 
@@ -17,23 +17,18 @@ export default function PersonSummaryView({ personId }: PersonSummaryViewProps) 
   const [summary, setSummary] = useState<PersonSummaryType | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchSummary = useCallback(async () => {
-    setLoading(true);
-    const result = await getPersonSummary({ personId });
-    if (result.success) {
-      setSummary(result.data);
-    }
-    setLoading(false);
-  }, [personId]);
-
   useEffect(() => {
-    fetchSummary();
-  }, [fetchSummary]);
+    getPersonSummary({ personId }).then((result) => {
+      if (result.success) setSummary(result.data);
+      setLoading(false);
+    });
+  }, [personId]);
 
   async function handleDelete(txId: string) {
     const result = await deleteTransaction({ id: txId });
     if (result.success) {
-      await fetchSummary();
+      const refreshed = await getPersonSummary({ personId });
+      if (refreshed.success) setSummary(refreshed.data);
     }
   }
 

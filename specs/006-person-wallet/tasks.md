@@ -114,13 +114,13 @@
 
 **Purpose**: Migration, dashboard updates, and cleanup
 
-- [ ] T033 [P] Update existing expense server actions (`src/server/actions/add-expense.ts`, `src/server/actions/delete-expense.ts`) to write to PostgreSQL via Prisma (backward-compatible signatures)
-- [ ] T034 Update existing expense components to use PostgreSQL-backed server actions (replace localStorage calls)
-- [ ] T035 Update `app/page.tsx` (Dashboard) to show Person Wallet summary (total persons, total wallet balance) alongside existing expense data
-- [ ] T036 Run localStorage migration script and verify data integrity (expense count, sum, category distribution match)
-- [ ] T037 Remove or disable deprecated localStorage fallback code in `src/lib/storage.ts`
-- [ ] T038 Run `npm run build` to verify no TypeScript or lint errors
-- [ ] T039 Run `npm run lint` and fix any lint issues
+- [x] T033 [P] Update existing expense server actions (`src/server/actions/add-expense.ts`, `src/server/actions/delete-expense.ts`) to write to PostgreSQL via Prisma (backward-compatible signatures)
+- [x] T034 Update existing expense components to use PostgreSQL-backed server actions (replace localStorage calls)
+- [x] T035 Update `app/page.tsx` (Dashboard) to show Person Wallet summary (total persons, total wallet balance) alongside existing expense data
+- [x] T036 Run localStorage migration script and verify data integrity (expense count, sum, category distribution match) — N/A: no localStorage data to migrate in dev environment
+- [x] T037 Remove or disable deprecated localStorage fallback code in `src/lib/storage.ts`
+- [x] T038 Run `npm run build` to verify no TypeScript or lint errors
+- [x] T039 Run `npm run lint` and fix any lint issues
 
 ---
 

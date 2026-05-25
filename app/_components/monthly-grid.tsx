@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { createCredit, getMonthlyCredits } from "@/src/server/actions/wallet";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -24,35 +24,31 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
   const [editValue, setEditValue] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchCredits = useCallback(async () => {
-    setLoading(true);
-    const result = await getMonthlyCredits({ personId, year, month });
-    if (result.success) {
-      setEntries(result.data.entries);
-      setTotal(result.data.total);
-    }
-    setLoading(false);
-  }, [personId, year, month]);
-
   useEffect(() => {
-    fetchCredits();
-  }, [fetchCredits]);
+    getMonthlyCredits({ personId, year, month }).then((result) => {
+      if (result.success) {
+        setEntries(result.data.entries);
+        setTotal(result.data.total);
+      }
+      setLoading(false);
+    });
+  }, [personId, year, month]);
 
   function prevMonth() {
     if (month === 1) {
-      setYear(y => y - 1);
+      setYear((y) => y - 1);
       setMonth(12);
     } else {
-      setMonth(m => m - 1);
+      setMonth((m) => m - 1);
     }
   }
 
   function nextMonth() {
     if (month === 12) {
-      setYear(y => y + 1);
+      setYear((y) => y + 1);
       setMonth(1);
     } else {
-      setMonth(m => m + 1);
+      setMonth((m) => m + 1);
     }
   }
 
@@ -86,7 +82,11 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
     });
     setEditing(null);
     if (result.success) {
-      await fetchCredits();
+      const refreshed = await getMonthlyCredits({ personId, year, month });
+      if (refreshed.success) {
+        setEntries(refreshed.data.entries);
+        setTotal(refreshed.data.total);
+      }
     }
   }
 

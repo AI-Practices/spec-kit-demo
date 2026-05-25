@@ -38,8 +38,6 @@ export default function DebitForm({ personId, personName }: DebitFormProps) {
     setSuccess(true);
   }
 
-  const today = new Date().toISOString().slice(0, 10);
-
   return (
     <div>
       <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4">
