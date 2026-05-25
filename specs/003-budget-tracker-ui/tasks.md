@@ -31,7 +31,7 @@ description: "Task list for Budget Tracker & UI Enhancement feature implementati
 
 **Purpose**: Verify the existing project is ready for feature development
 
-- [ ] T001 Verify project dependencies are installed and dev server starts with `npm install && npm run dev`
+- [x] T001 Verify project dependencies are installed and dev server starts with `npm install && npm run dev`
 
 **Checkpoint**: Project runs without errors
 
@@ -43,10 +43,10 @@ description: "Task list for Budget Tracker & UI Enhancement feature implementati
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 [P] Add `Budget` interface to `src/server/types.ts`
-- [ ] T003 [P] Create budget Zod schemas in `src/server/schemas/budget.ts`
-- [ ] T004 [P] Create budget localStorage wrapper in `src/lib/budget-storage.ts`
-- [ ] T005 [P] Add budget color CSS custom properties to `app/globals.css`
+- [x] T002 [P] Add `Budget` interface to `src/server/types.ts`
+- [x] T003 [P] Create budget Zod schemas in `src/server/schemas/budget.ts`
+- [x] T004 [P] Create budget localStorage wrapper in `src/lib/budget-storage.ts`
+- [x] T005 [P] Add budget color CSS custom properties to `app/globals.css`
 
 **Checkpoint**: Foundation ready — user story implementation can begin
 
