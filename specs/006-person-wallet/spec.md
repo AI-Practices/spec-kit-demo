@@ -8,6 +8,15 @@
 
 **Input**: User description: "I need to add a new feature called **Person Wallet / Advance Ledger** in the budget tracker app. This feature should allow users to manage money separately for each person. Users can add daily credit entries (money given) with different amounts each day, similar to a monthly grid view. Users should also be able to add debit entries (money spent/deducted/returned) along with a debit reason or notes. Every entry must be stored as a transaction with fields like person, date, type (credit/debit), amount, and notes. The system should automatically calculate each person's current balance using all transactions. It should also show person-wise summaries including total credited amount, total debited amount, remaining balance, and transaction history. Since the app currently uses local storage, the database should be extended with separate structures/tables for persons and wallet_transactions. The design should support future features like reports, filters, exports, attachments, and cloud sync."
 
+## Clarifications
+
+### Session 2026-05-25
+
+- Q: Person deletion — hard delete (permanent removal) or soft delete (mark inactive, preserve data)? → A: Hard delete — person and all transactions permanently removed
+- Q: Should individual transactions be deletable (for corrections)? → A: Yes — individual credit or debit entries can be deleted; balance recalculates automatically
+- Q: Overdraft behavior — block debits that exceed balance, or allow negative balances? → A: Allow negative balances — balance goes negative when a debit exceeds available credit; future credits restore it
+- Q: Where does the Person Wallet feature live in the app navigation? → A: New top-level "Persons" nav item — dedicated `/persons` route with sub-views: person list, per-person monthly grid, per-person summary
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Manage Persons and Record Daily Credits (Priority: P1)
@@ -39,7 +48,7 @@ The user records debit entries against a person — money spent, deducted, or re
 
 1. **Given** a person exists with a positive balance, **When** the user records a debit entry with an amount and notes, **Then** the debit is saved and the person's balance decreases by the debit amount
 2. **Given** the user is recording a debit, **When** they submit without providing notes/reason, **Then** a validation error is shown and the debit is not saved
-3. **Given** the user records a debit, **When** the amount exceeds the current balance, **Then** the balance may become negative (overdraft allowed or subject to business rules)
+3. **Given** the user records a debit, **When** the amount exceeds the current balance, **Then** the balance becomes negative and reflects the deficit accurately
 
 ---
 
@@ -99,7 +108,8 @@ The user edits a person's name or deletes a person they no longer need to track.
 - **FR-012**: All person data and transaction data MUST persist across page reloads via local storage
 - **FR-013**: The system MUST reject credit or debit entries with zero or negative amounts with a validation message
 - **FR-014**: When no persons exist, the app MUST display an empty state with a message and call-to-action to add the first person
-- **FR-015**: The data structures for persons and transactions MUST be designed to support future features including reports, filters, exports, attachments, and cloud sync without requiring data migration
+- **FR-015**: Users MUST be able to delete an individual credit or debit entry without deleting the person; the balance MUST recalculate automatically after deletion
+- **FR-016**: The data structures for persons and transactions MUST be designed to support future features including reports, filters, exports, attachments, and cloud sync without requiring data migration
 
 ### Key Entities *(include if feature involves data)*
 
