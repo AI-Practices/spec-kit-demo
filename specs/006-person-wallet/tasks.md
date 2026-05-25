@@ -46,15 +46,15 @@
 
 ### Implementation for User Story 1
 
-- [ ] T013 [US1] Create person CRUD server actions in `src/server/actions/persons.ts` (createPerson, getPersons)
-- [ ] T014 [US1] Create credit entry server action in `src/server/actions/wallet.ts` (createCredit)
-- [ ] T015 [US1] Create monthly credits query in `src/server/actions/wallet.ts` (getMonthlyCredits)
-- [ ] T016 [US1] Create `app/_components/person-list.tsx` component (list persons with balances, add person form)
-- [ ] T017 [US1] Create `app/persons/page.tsx` page (person list route)
-- [ ] T018 [US1] Create `app/_components/monthly-grid.tsx` component (calendar grid showing daily credit amounts, month navigation, click-to-edit cells)
-- [ ] T019 [US1] Create `app/persons/[id]/page.tsx` page (person detail with monthly grid)
-- [ ] T020 [US1] Update `app/layout.tsx` to add "Persons" nav link to the navigation bar
-- [ ] T021 [US1] Implement empty state for person list (no persons message + CTA button)
+- [x] T013 [US1] Create person CRUD server actions in `src/server/actions/persons.ts` (createPerson, getPersons)
+- [x] T014 [US1] Create credit entry server action in `src/server/actions/wallet.ts` (createCredit)
+- [x] T015 [US1] Create monthly credits query in `src/server/actions/wallet.ts` (getMonthlyCredits)
+- [x] T016 [US1] Create `app/_components/person-list.tsx` component (list persons with balances, add person form)
+- [x] T017 [US1] Create `app/persons/page.tsx` page (person list route)
+- [x] T018 [US1] Create `app/_components/monthly-grid.tsx` component (calendar grid showing daily credit amounts, month navigation, click-to-edit cells)
+- [x] T019 [US1] Create `app/persons/[id]/page.tsx` page (person detail with monthly grid)
+- [x] T020 [US1] Update `app/layout.tsx` to add "Persons" nav link to the navigation bar
+- [x] T021 [US1] Implement empty state for person list (no persons message + CTA button)
 
 **Checkpoint**: User Story 1 is fully functional — persons can be created, daily credits recorded, and viewed in the monthly grid
 

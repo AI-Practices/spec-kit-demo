@@ -36,6 +36,8 @@ export interface Person {
   deletedAt: string | null;
 }
 
+export type PersonWithBalance = Person & { balance: number };
+
 export interface WalletTransaction {
   id: string;
   userId: string;
