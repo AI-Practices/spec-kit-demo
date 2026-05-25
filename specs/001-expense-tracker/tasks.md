@@ -63,11 +63,11 @@ description: "Tasks for Expense Tracker feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T006 [P] [US1] Create add-expense server action in `src/server/actions/add-expense.ts` — `'use server'` function that takes `AddExpenseInput`, validates with Zod schema, returns `ActionResult<Expense>` (success with generated UUID on valid, error map on invalid)
+- [x] T006 [P] [US1] Create add-expense server action in `src/server/actions/add-expense.ts` — `'use server'` function that takes `AddExpenseInput`, validates with Zod schema, returns `ActionResult<Expense>` (success with generated UUID on valid, error map on invalid)
 
-- [ ] T007 [US1] Create expenses page route in `app/expenses/page.tsx` — Server Component that renders the page heading ("Expenses") and the add-expense-form + expense-list client components inside a wrapper layout
+- [x] T007 [US1] Create expenses page route in `app/expenses/page.tsx` — Server Component that renders the page heading ("Expenses") and the add-expense-form + expense-list client components inside a wrapper layout
 
-- [ ] T008 [US1] Create add-expense-form client component in `app/_components/add-expense-form.tsx` — `'use client'` form with fields: amount (number input, cents), date (date input, max=today), category (select dropdown of 8 options), description (textarea). On submit: calls server action → if valid, saves to localStorage via `addExpense()` and resets form → if errors, displays per-field validation messages. Handle quota error with user-friendly message.
+- [x] T008 [US1] Create add-expense-form client component in `app/_components/add-expense-form.tsx` — `'use client'` form with fields: amount (number input, cents), date (date input, max=today), category (select dropdown of 8 options), description (textarea). On submit: calls server action → if valid, saves to localStorage via `addExpense()` and resets form → if errors, displays per-field validation messages. Handle quota error with user-friendly message.
 
 **Checkpoint**: At this point, User Story 1 is fully functional — user can add expenses and see them persisted.
 
