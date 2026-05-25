@@ -27,6 +27,15 @@ export interface Expense {
   description: string;
 }
 
+export interface Budget {
+  id: string;
+  category: Category;
+  amount: number;
+  month: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type ActionResult<T> =
   | { success: true; data: T }
   | { success: false; errors: Record<string, string[]> };

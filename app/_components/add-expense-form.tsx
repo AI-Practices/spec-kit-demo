@@ -67,7 +67,7 @@ export default function AddExpenseForm({
           min="1"
           step="1"
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
         />
         {errors?.amount && (
           <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.amount[0]}</p>
@@ -84,7 +84,7 @@ export default function AddExpenseForm({
           type="date"
           max={today}
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
         />
         {errors?.date && (
           <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.date[0]}</p>
@@ -99,7 +99,7 @@ export default function AddExpenseForm({
           id="category"
           name="category"
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
         >
           <option value="">Select a category</option>
           {CATEGORY_LABELS.map((cat) => (
@@ -122,7 +122,7 @@ export default function AddExpenseForm({
           name="description"
           required
           rows={3}
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
         />
         {errors?.description && (
           <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.description[0]}</p>
@@ -131,7 +131,7 @@ export default function AddExpenseForm({
 
       <button
         type="submit"
-        className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-500"
       >
         Add Expense
       </button>
