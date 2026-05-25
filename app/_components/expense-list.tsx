@@ -1,31 +1,32 @@
 'use client';
 
-import { useState } from "react";
-import { getExpenses, removeExpense } from "@/src/lib/storage";
-import { deleteExpense as deleteExpenseAction } from "@/src/server/actions/delete-expense";
+import { useSyncExternalStore } from "react";
+import { getExpenses, removeExpense, subscribe } from "@/src/lib/storage";
 import type { Expense } from "@/src/server/types";
+import { deleteExpense as deleteExpenseAction } from "@/src/server/actions/delete-expense";
 import EmptyState from "@/app/_components/empty-state";
+
+const serverSnapshot: Expense[] = [];
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
 export default function ExpenseList() {
-  const [expenses, setExpenses] = useState<Expense[]>(() =>
-    getExpenses().sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
+  const allExpenses = useSyncExternalStore(
+    subscribe,
+    () => getExpenses(),
+    () => serverSnapshot
+  );
+
+  const expenses: Expense[] = [...allExpenses].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
   async function handleDelete(id: string) {
     const result = await deleteExpenseAction({ id });
     if (result.success) {
       removeExpense(id);
-      setExpenses(
-        getExpenses().sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        )
-      );
     }
   }
 

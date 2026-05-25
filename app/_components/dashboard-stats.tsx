@@ -1,14 +1,22 @@
 'use client';
 
-import { getExpenses } from "@/src/lib/storage";
+import { useSyncExternalStore } from "react";
+import { getExpenses, subscribe } from "@/src/lib/storage";
+import type { Expense } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
+
+const serverSnapshot: Expense[] = [];
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
 export default function DashboardStats() {
-  const allExpenses = getExpenses();
+  const allExpenses = useSyncExternalStore(
+    subscribe,
+    () => getExpenses(),
+    () => serverSnapshot
+  );
 
   if (allExpenses.length === 0) {
     return <EmptyState />;
