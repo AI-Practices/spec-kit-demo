@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+import ThemeToggle from "@/app/_components/theme-toggle";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,13 +30,14 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <nav className="flex items-center gap-6 px-6 py-4 border-b border-zinc-200">
-          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
+        <nav className="flex items-center gap-6 px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
+          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
             Dashboard
           </Link>
-          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-zinc-900">
+          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100">
             Expenses
           </Link>
+          <ThemeToggle />
         </nav>
         <main className="flex-1">{children}</main>
       </body>

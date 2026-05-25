@@ -31,29 +31,29 @@ export default function DashboardStats() {
 
   return (
     <div className="space-y-6">
-      <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50">
-        <p className="text-sm text-zinc-500 mb-1">Total Spending</p>
-        <p className="text-3xl font-bold text-zinc-900">{formatAmount(total)}</p>
+      <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 dark:bg-zinc-800 dark:border-zinc-700">
+        <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Total Spending</p>
+        <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{formatAmount(total)}</p>
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-zinc-800 mb-3">
+        <h2 className="text-lg font-semibold text-zinc-800 mb-3 dark:text-zinc-200">
           Recent Expenses
         </h2>
         <div className="space-y-2">
           {recent.map((expense) => (
             <div
               key={expense.id}
-              className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg"
+              className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg dark:border-zinc-700"
             >
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-zinc-900 min-w-[72px]">
+                <span className="text-sm font-medium text-zinc-900 min-w-[72px] dark:text-zinc-100">
                   {formatAmount(expense.amount)}
                 </span>
-                <span className="text-sm text-zinc-500 min-w-[88px]">
+                <span className="text-sm text-zinc-500 min-w-[88px] dark:text-zinc-400">
                   {expense.date}
                 </span>
-                <span className="inline-block px-2 py-0.5 text-xs font-medium bg-zinc-100 text-zinc-700 rounded">
+                <span className="inline-block px-2 py-0.5 text-xs font-medium bg-zinc-100 text-zinc-700 rounded dark:bg-zinc-700 dark:text-zinc-300">
                   {expense.category}
                 </span>
               </div>

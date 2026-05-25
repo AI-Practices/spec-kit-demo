@@ -48,16 +48,16 @@ export default function AddExpenseForm({
     <form
       id="add-expense-form"
       action={handleSubmit}
-      className="space-y-4 mb-8 p-4 border border-zinc-200 rounded-lg"
+      className="space-y-4 mb-8 p-4 border border-zinc-200 rounded-lg dark:border-zinc-700"
     >
       {quotaError && (
-        <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded">
+        <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded dark:bg-red-900/30 dark:text-red-400">
           {quotaError}
         </p>
       )}
 
       <div>
-        <label htmlFor="amount" className="block text-sm font-medium mb-1">
+        <label htmlFor="amount" className="block text-sm font-medium mb-1 dark:text-zinc-300">
           Amount (cents)
         </label>
         <input
@@ -67,15 +67,15 @@ export default function AddExpenseForm({
           min="1"
           step="1"
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
         />
         {errors?.amount && (
-          <p className="text-sm text-red-600 mt-1">{errors.amount[0]}</p>
+          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.amount[0]}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="date" className="block text-sm font-medium mb-1">
+        <label htmlFor="date" className="block text-sm font-medium mb-1 dark:text-zinc-300">
           Date
         </label>
         <input
@@ -84,22 +84,22 @@ export default function AddExpenseForm({
           type="date"
           max={today}
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
         />
         {errors?.date && (
-          <p className="text-sm text-red-600 mt-1">{errors.date[0]}</p>
+          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.date[0]}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="category" className="block text-sm font-medium mb-1">
+        <label htmlFor="category" className="block text-sm font-medium mb-1 dark:text-zinc-300">
           Category
         </label>
         <select
           id="category"
           name="category"
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
         >
           <option value="">Select a category</option>
           {CATEGORY_LABELS.map((cat) => (
@@ -109,12 +109,12 @@ export default function AddExpenseForm({
           ))}
         </select>
         {errors?.category && (
-          <p className="text-sm text-red-600 mt-1">{errors.category[0]}</p>
+          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.category[0]}</p>
         )}
       </div>
 
       <div>
-        <label htmlFor="description" className="block text-sm font-medium mb-1">
+        <label htmlFor="description" className="block text-sm font-medium mb-1 dark:text-zinc-300">
           Description
         </label>
         <textarea
@@ -122,16 +122,16 @@ export default function AddExpenseForm({
           name="description"
           required
           rows={3}
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm dark:bg-zinc-800 dark:border-zinc-600"
         />
         {errors?.description && (
-          <p className="text-sm text-red-600 mt-1">{errors.description[0]}</p>
+          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.description[0]}</p>
         )}
       </div>
 
       <button
         type="submit"
-        className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800"
+        className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
       >
         Add Expense
       </button>

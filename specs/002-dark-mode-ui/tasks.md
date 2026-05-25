@@ -32,9 +32,9 @@ description: "Tasks for Dark Mode UI feature implementation"
 
 **Purpose**: Configure Tailwind v4 dark mode variant and CSS custom properties. Create the theme toggle component that manages light/dark/system state.
 
-- [ ] T001 Update `app/globals.css` — add `@variant dark (&:where(.dark, .dark *))` to switch Tailwind's `dark:` variant to class-based strategy, define dark-mode CSS custom properties for backgrounds, surfaces, borders, text, form controls, and error states used across all components
+- [X] T001 Update `app/globals.css` — add `@variant dark (&:where(.dark, .dark *))` to switch Tailwind's `dark:` variant to class-based strategy, define dark-mode CSS custom properties for backgrounds, surfaces, borders, text, form controls, and error states used across all components
 
-- [ ] T002 [P] Create theme-toggle client component in `app/_components/theme-toggle.tsx` — `'use client'` component that:
+- [X] T002 [P] Create theme-toggle client component in `app/_components/theme-toggle.tsx` — `'use client'` component that:
   - Reads persisted theme preference from localStorage key `"theme"` on mount
   - Manages three states: `"light"`, `"dark"`, `"system"`
   - Applies/removes `.dark` class on `<html>` element based on state
@@ -55,17 +55,17 @@ description: "Tasks for Dark Mode UI feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] Update `app/layout.tsx` — add `dark:` Tailwind classes to nav bar (background, border, link text colors) and page body wrapper
+- [X] T003 [US1] Update `app/layout.tsx` — add `dark:` Tailwind classes to nav bar (background, border, link text colors) and page body wrapper
 
-- [ ] T004 [P] [US1] Update `app/_components/add-expense-form.tsx` — add `dark:` Tailwind classes: form container border, input/select/textarea backgrounds (`dark:bg-zinc-800`) and borders (`dark:border-zinc-600`), label text (`dark:text-zinc-300`), button background (`dark:bg-zinc-100 dark:text-zinc-900`) and hover, error message background (`dark:bg-red-900/30`) and text (`dark:text-red-400`)
+- [X] T004 [P] [US1] Update `app/_components/add-expense-form.tsx` — add `dark:` Tailwind classes: form container border, input/select/textarea backgrounds (`dark:bg-zinc-800`) and borders (`dark:border-zinc-600`), label text (`dark:text-zinc-300`), button background (`dark:bg-zinc-100 dark:text-zinc-900`) and hover, error message background (`dark:bg-red-900/30`) and text (`dark:text-red-400`)
 
-- [ ] T005 [P] [US1] Update `app/_components/expense-list.tsx` — add `dark:` Tailwind classes: row container borders (`dark:border-zinc-700`), amount text (`dark:text-zinc-100`), date text (`dark:text-zinc-400`), category badge background (`dark:bg-zinc-700`) and text (`dark:text-zinc-300`), description text (`dark:text-zinc-400`), delete button colors and hover
+- [X] T005 [P] [US1] Update `app/_components/expense-list.tsx` — add `dark:` Tailwind classes: row container borders (`dark:border-zinc-700`), amount text (`dark:text-zinc-100`), date text (`dark:text-zinc-400`), category badge background (`dark:bg-zinc-700`) and text (`dark:text-zinc-300`), description text (`dark:text-zinc-400`), delete button colors and hover
 
-- [ ] T006 [P] [US1] Update `app/_components/dashboard-stats.tsx` — add `dark:` Tailwind classes: total card background (`dark:bg-zinc-800`) and border (`dark:border-zinc-700`), "Total Spending" label (`dark:text-zinc-400`), total amount (`dark:text-zinc-100`), section heading (`dark:text-zinc-200`), row container borders (`dark:border-zinc-700`), amount/text colors
+- [X] T006 [P] [US1] Update `app/_components/dashboard-stats.tsx` — add `dark:` Tailwind classes: total card background (`dark:bg-zinc-800`) and border (`dark:border-zinc-700`), "Total Spending" label (`dark:text-zinc-400`), total amount (`dark:text-zinc-100`), section heading (`dark:text-zinc-200`), row container borders (`dark:border-zinc-700`), amount/text colors
 
-- [ ] T007 [P] [US1] Update `app/_components/empty-state.tsx` — add `dark:` Tailwind classes: heading text (`dark:text-zinc-200`), description text (`dark:text-zinc-400`), CTA button background (`dark:bg-zinc-100 dark:text-zinc-900`) and hover
+- [X] T007 [P] [US1] Update `app/_components/empty-state.tsx` — add `dark:` Tailwind classes: heading text (`dark:text-zinc-200`), description text (`dark:text-zinc-400`), CTA button background (`dark:bg-zinc-100 dark:text-zinc-900`) and hover
 
-- [ ] T008 [US1] Update `app/page.tsx` and `app/expenses/page.tsx` — add `dark:` Tailwind classes to page-level elements: headings (`dark:text-zinc-100`), wrapper divs
+- [X] T008 [US1] Update `app/page.tsx` and `app/expenses/page.tsx` — add `dark:` Tailwind classes to page-level elements: headings (`dark:text-zinc-100`), wrapper divs
 
 **Checkpoint**: System-led dark mode fully functional — every component adapts to OS preference. Manual toggle not yet wired.
 
@@ -79,9 +79,9 @@ description: "Tasks for Dark Mode UI feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T009 [US2] Update `app/layout.tsx` — import and render `<ThemeToggle />` component in the navigation bar next to existing nav links
+- [X] T009 [US2] Update `app/layout.tsx` — import and render `<ThemeToggle />` component in the navigation bar next to existing nav links
 
-- [ ] T010 [US2] Wire theme-toggle persistence — verify that theme-toggle reads from localStorage on mount and writes on change. Handle the edge case where `"system"` mode requires listening to `matchMedia` changes and updating the `.dark` class in real time
+- [X] T010 [US2] Wire theme-toggle persistence — verify that theme-toggle reads from localStorage on mount and writes on change. Handle the edge case where `"system"` mode requires listening to `matchMedia` changes and updating the `.dark` class in real time
 
 **Checkpoint**: Manual toggle is fully functional and persists. All three modes (Light, Dark, System) work correctly.
 
@@ -91,11 +91,11 @@ description: "Tasks for Dark Mode UI feature implementation"
 
 **Purpose**: Verify quality and fix any issues.
 
-- [ ] T011 Run `npm run lint` and fix any ESLint errors in dark mode files
+- [X] T011 Run `npm run lint` and fix any ESLint errors in dark mode files
 
-- [ ] T012 Run `npm run build` and fix any build errors
+- [X] T012 Run `npm run build` and fix any build errors
 
-- [ ] T013 Verify the app renders correctly in both light and dark modes — check every page and component visually
+- [X] T013 Verify the app renders correctly in both light and dark modes — check every page and component visually
 
 ---
 
