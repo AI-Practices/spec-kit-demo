@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, useRef } from "react";
 import { getExpenses, subscribe } from "@/src/lib/storage";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
 import type { Expense, Budget } from "@/src/server/types";
@@ -20,15 +20,25 @@ function getCurrentMonth(): string {
 }
 
 export default function DashboardStats() {
+  const expensesRef = useRef<Expense[]>(serverSnapshotExpenses);
   const allExpenses = useSyncExternalStore(
     subscribe,
-    () => getExpenses(),
+    () => {
+      const next = getExpenses();
+      if (next !== expensesRef.current) expensesRef.current = next;
+      return expensesRef.current;
+    },
     () => serverSnapshotExpenses
   );
 
+  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
   const allBudgets = useSyncExternalStore(
     subscribeBudgets,
-    () => getBudgets(),
+    () => {
+      const next = getBudgets();
+      if (next !== budgetsRef.current) budgetsRef.current = next;
+      return budgetsRef.current;
+    },
     () => serverSnapshotBudgets
   );
 

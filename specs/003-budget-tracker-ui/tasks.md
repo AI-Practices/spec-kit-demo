@@ -113,9 +113,9 @@ description: "Task list for Budget Tracker & UI Enhancement feature implementati
 
 ### Implementation for User Story 4
 
-- [ ] T020 [P] [US4] Compute BudgetSummary on render in `app/budgets/page.tsx` by joining budgets with expenses by category and month
-- [ ] T021 [P] [US4] Integrate month-picker component for month switching on the budget page
-- [ ] T022 [US4] Build full budget summary table with budget, spent, remaining, and percentage columns (depends on T020, T021)
+- [x] T020 [P] [US4] Compute BudgetSummary on render in `app/_components/budget-manager.tsx` by joining budgets with expenses by category and month
+- [x] T021 [P] [US4] Integrate month-picker component for month switching on the budget page
+- [x] T022 [US4] Build full budget summary table with budget, spent, remaining, and percentage columns (depends on T020, T021)
 
 **Checkpoint**: User Story 4 is complete — dedicated budget page provides a full monthly financial snapshot
 

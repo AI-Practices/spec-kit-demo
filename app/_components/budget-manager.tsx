@@ -1,19 +1,21 @@
 'use client';
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useSyncExternalStore } from "react";
 import { setBudget as setBudgetAction } from "@/src/server/actions/set-budget";
 import { removeBudget as removeBudgetAction } from "@/src/server/actions/remove-budget";
 import { getBudgets, setBudget as saveBudget, removeBudget as removeBudgetFromStorage, subscribe } from "@/src/lib/budget-storage";
+import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
 import { CATEGORY_LABELS } from "@/src/server/types";
-import type { Budget } from "@/src/server/types";
+import type { Budget, Expense } from "@/src/server/types";
 import MonthPicker from "@/app/_components/month-picker";
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-const serverSnapshot: Budget[] = [];
+const serverSnapshotBudgets: Budget[] = [];
+const serverSnapshotExpenses: Expense[] = [];
 
 function getCurrentYearMonth(): { year: number; month: number } {
   const now = new Date();
@@ -31,10 +33,26 @@ export default function BudgetManager() {
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
+  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
   const allBudgets = useSyncExternalStore(
     subscribe,
-    () => getBudgets(),
-    () => serverSnapshot,
+    () => {
+      const next = getBudgets();
+      if (next !== budgetsRef.current) budgetsRef.current = next;
+      return budgetsRef.current;
+    },
+    () => serverSnapshotBudgets,
+  );
+
+  const expensesRef = useRef<Expense[]>(serverSnapshotExpenses);
+  const allExpenses = useSyncExternalStore(
+    subscribeExpenses,
+    () => {
+      const next = getExpenses();
+      if (next !== expensesRef.current) expensesRef.current = next;
+      return expensesRef.current;
+    },
+    () => serverSnapshotExpenses,
   );
 
   const monthStr = toMonthString(year, month);
@@ -84,6 +102,22 @@ export default function BudgetManager() {
     setYear(newYear);
     setMonth(newMonth);
   }, []);
+
+  const monthExpenses = allExpenses.filter((e) => e.date.startsWith(monthStr));
+
+  const summaries = CATEGORY_LABELS.map((cat) => {
+    const budget = monthBudgets.find((b) => b.category === cat);
+    const spent = monthExpenses
+      .filter((e) => e.category === cat)
+      .reduce((sum, e) => sum + e.amount, 0);
+    if (!budget) {
+      return { category: cat, budgetAmount: null, spent, remaining: null, percentage: null, status: "none" as const };
+    }
+    const remaining = budget.amount - spent;
+    const percentage = budget.amount > 0 ? (spent / budget.amount) * 100 : 0;
+    const status = percentage >= 100 ? "overspent" : percentage >= 80 ? "warning" : "safe";
+    return { category: cat, budgetAmount: budget.amount, spent, remaining, percentage, status };
+  });
 
   return (
     <div className="space-y-6">
@@ -190,6 +224,42 @@ export default function BudgetManager() {
           ))}
         </div>
       )}
+
+      <div className="border-t border-zinc-200 pt-6 dark:border-zinc-700">
+        <h2 className="text-lg font-semibold text-zinc-800 mb-4 dark:text-zinc-200">
+          Monthly Overview
+        </h2>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-zinc-200 dark:border-zinc-700">
+                <th className="text-left py-2 pr-4 font-medium text-zinc-500 dark:text-zinc-400">Category</th>
+                <th className="text-right py-2 px-2 font-medium text-zinc-500 dark:text-zinc-400">Budget</th>
+                <th className="text-right py-2 px-2 font-medium text-zinc-500 dark:text-zinc-400">Spent</th>
+                <th className="text-right py-2 px-2 font-medium text-zinc-500 dark:text-zinc-400">Remaining</th>
+                <th className="text-right py-2 pl-2 font-medium text-zinc-500 dark:text-zinc-400">Used</th>
+              </tr>
+            </thead>
+            <tbody>
+              {summaries.map((s) => (
+                <tr key={s.category} className="border-b border-zinc-100 dark:border-zinc-800">
+                  <td className="py-3 pr-4 text-zinc-900 dark:text-zinc-100">{s.category}</td>
+                  <td className="text-right py-3 px-2 text-zinc-700 dark:text-zinc-300">
+                    {s.budgetAmount !== null ? formatAmount(s.budgetAmount) : "Not set"}
+                  </td>
+                  <td className="text-right py-3 px-2 text-zinc-700 dark:text-zinc-300">{formatAmount(s.spent)}</td>
+                  <td className={`text-right py-3 px-2 ${s.remaining !== null && s.remaining < 0 ? "text-[var(--budget-overspent)] font-medium" : "text-zinc-700 dark:text-zinc-300"}`}>
+                    {s.remaining !== null ? formatAmount(s.remaining) : "-"}
+                  </td>
+                  <td className={`text-right py-3 pl-2 ${s.status === "warning" ? "text-[var(--budget-warning)]" : s.status === "overspent" ? "text-[var(--budget-overspent)]" : "text-zinc-700 dark:text-zinc-300"}`}>
+                    {s.percentage !== null ? `${Math.round(s.percentage)}%` : "-"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useSyncExternalStore } from "react";
+import { useSyncExternalStore, useRef } from "react";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
 import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
 import type { Budget, Expense } from "@/src/server/types";
@@ -45,15 +45,25 @@ function computeSummaries(budgets: Budget[], expenses: Expense[], month: string)
 }
 
 export default function DashboardBudgets() {
+  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
   const allBudgets = useSyncExternalStore(
     subscribeBudgets,
-    () => getBudgets(),
+    () => {
+      const next = getBudgets();
+      if (next !== budgetsRef.current) budgetsRef.current = next;
+      return budgetsRef.current;
+    },
     () => serverSnapshotBudgets,
   );
 
+  const expensesRef = useRef<Expense[]>(serverSnapshotExpenses);
   const allExpenses = useSyncExternalStore(
     subscribeExpenses,
-    () => getExpenses(),
+    () => {
+      const next = getExpenses();
+      if (next !== expensesRef.current) expensesRef.current = next;
+      return expensesRef.current;
+    },
     () => serverSnapshotExpenses,
   );
 

@@ -23,11 +23,22 @@ function applyTheme(theme: Theme): void {
 }
 
 export default function ThemeToggle() {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    return getStoredTheme() ?? "system";
-  });
+  const [theme, setThemeState] = useState<Theme>("system");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    const stored = getStoredTheme();
+    if (stored) {
+      setThemeState(stored);
+      applyTheme(stored);
+    } else {
+      applyTheme("system");
+    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     applyTheme(theme);
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
@@ -38,11 +49,10 @@ export default function ThemeToggle() {
     };
     mql.addEventListener("change", handler);
     return () => mql.removeEventListener("change", handler);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const setTheme = useCallback((next: Theme) => {
     setThemeState(next);
-    applyTheme(next);
     try {
       localStorage.setItem("theme", next);
     } catch {}
@@ -65,9 +75,9 @@ export default function ThemeToggle() {
       type="button"
       onClick={cycle}
       className="ml-auto text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-      aria-label={`Theme: ${theme}. Click to cycle.`}
+      aria-label={`Theme: ${mounted ? theme : "system"}. Click to cycle.`}
     >
-      {icons[theme]}
+      {mounted ? icons[theme] : "◐"}
     </button>
   );
 }
