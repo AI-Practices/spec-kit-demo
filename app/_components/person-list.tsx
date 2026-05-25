@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { createPerson, getPersons } from "@/src/server/actions/persons";
+import { createPerson, getPersons, updatePerson, deletePerson } from "@/src/server/actions/persons";
 import type { PersonWithBalance } from "@/src/server/types";
 
 function formatAmount(cents: number): string {
@@ -29,6 +29,10 @@ export default function PersonList() {
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
 
   useEffect(() => {
     getPersons().then((result) => {
@@ -40,6 +44,13 @@ export default function PersonList() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setErrors(null);
+    setDuplicateWarning(null);
+
+    const exists = persons.some((p) => p.name.toLowerCase() === name.trim().toLowerCase());
+    if (exists) {
+      setDuplicateWarning(`A person named "${name.trim()}" already exists. You can still add another with the same name.`);
+    }
+
     const result = await createPerson({ name });
     if (!result.success) {
       setErrors(result.errors);
@@ -48,6 +59,45 @@ export default function PersonList() {
     setName("");
     const refreshed = await getPersons();
     if (refreshed.success) setPersons(refreshed.data);
+  }
+
+  function startEdit(person: PersonWithBalance) {
+    setEditingId(person.id);
+    setEditName(person.name);
+  }
+
+  async function saveEdit(id: string) {
+    if (!editName.trim()) {
+      setEditingId(null);
+      return;
+    }
+    const result = await updatePerson({ id, name: editName });
+    if (result.success) {
+      const refreshed = await getPersons();
+      if (refreshed.success) setPersons(refreshed.data);
+    }
+    setEditingId(null);
+  }
+
+  function cancelEdit() {
+    setEditingId(null);
+  }
+
+  function confirmDelete(id: string) {
+    setDeletingId(id);
+  }
+
+  async function executeDelete(id: string) {
+    const result = await deletePerson({ id });
+    if (result.success) {
+      const refreshed = await getPersons();
+      if (refreshed.success) setPersons(refreshed.data);
+    }
+    setDeletingId(null);
+  }
+
+  function cancelDelete() {
+    setDeletingId(null);
   }
 
   if (loading) {
@@ -78,6 +128,9 @@ export default function PersonList() {
             required
             className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
           />
+          {duplicateWarning && (
+            <p className="text-sm text-amber-600 mt-1 dark:text-amber-400">{duplicateWarning}</p>
+          )}
           {errors?.name && (
             <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.name[0]}</p>
           )}
@@ -93,29 +146,97 @@ export default function PersonList() {
         </button>
       </form>
 
+      {deletingId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white dark:bg-zinc-800 rounded-lg p-6 max-w-sm w-full mx-4 shadow-xl">
+            <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-2">Delete Person?</h3>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
+              This will permanently delete this person and all their transactions. This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 text-sm font-medium text-zinc-600 border border-zinc-300 rounded transition-colors hover:bg-zinc-50 dark:text-zinc-400 dark:border-zinc-600 dark:hover:bg-zinc-700"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => executeDelete(deletingId)}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded transition-colors hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {persons.length === 0 ? (
         <EmptyPersonState />
       ) : (
         <div className="space-y-2">
           {persons.map((person) => (
-            <Link
+            <div
               key={person.id}
-              href={`/persons/${person.id}`}
               className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
             >
-              <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                {person.name}
-              </span>
-              <span
-                className={`text-sm font-medium tabular-nums ${
-                  person.balance >= 0
-                    ? "text-emerald-600 dark:text-emerald-400"
-                    : "text-red-600 dark:text-red-400"
-                }`}
-              >
-                {formatAmount(person.balance)}
-              </span>
-            </Link>
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                {editingId === person.id ? (
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={(e) => setEditName(e.target.value)}
+                    onBlur={() => saveEdit(person.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") saveEdit(person.id);
+                      if (e.key === "Escape") cancelEdit();
+                    }}
+                    className="w-full border border-zinc-300 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-100"
+                    autoFocus
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                ) : (
+                  <Link
+                    href={`/persons/${person.id}`}
+                    className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate"
+                  >
+                    {person.name}
+                  </Link>
+                )}
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <span
+                  className={`text-sm font-medium tabular-nums ${
+                    person.balance >= 0
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-red-600 dark:text-red-400"
+                  }`}
+                >
+                  {formatAmount(person.balance)}
+                </span>
+                {editingId === person.id ? (
+                  <button
+                    onClick={() => saveEdit(person.id)}
+                    className="px-2 py-1 text-xs font-medium text-emerald-600 transition-colors hover:text-emerald-800 hover:bg-emerald-50 rounded dark:text-emerald-400 dark:hover:text-emerald-300 dark:hover:bg-emerald-900/30"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => startEdit(person)}
+                    className="px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 hover:bg-zinc-100 rounded dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-700"
+                  >
+                    Edit
+                  </button>
+                )}
+                <button
+                  onClick={() => confirmDelete(person.id)}
+                  className="px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:text-red-800 hover:bg-red-50 rounded dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           ))}
         </div>
       )}

@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/src/server/db";
-import { createPersonSchema } from "@/src/server/schemas/person";
+import { createPersonSchema, updatePersonSchema, deletePersonSchema } from "@/src/server/schemas/person";
 import type { ActionResult, PersonWithBalance } from "@/src/server/types";
 import { revalidatePath } from "next/cache";
 
@@ -92,6 +92,68 @@ export async function getPersons(): Promise<ActionResult<PersonWithBalance[]>> {
     return {
       success: false,
       errors: { _form: [err instanceof Error ? err.message : "Failed to fetch persons"] },
+    };
+  }
+}
+
+export async function updatePerson(
+  input: unknown
+): Promise<ActionResult<PersonWithBalance>> {
+  const parsed = updatePersonSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      errors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
+  }
+  try {
+    const userId = await ensureUser();
+    const person = await prisma.person.update({
+      where: { id: parsed.data.id, userId },
+      data: { name: parsed.data.name },
+    });
+    revalidatePath("/persons");
+    return {
+      success: true,
+      data: {
+        ...serializePerson(person),
+        balance: await computeBalance(person.id, userId),
+      },
+    };
+  } catch (err) {
+    return {
+      success: false,
+      errors: { _form: [err instanceof Error ? err.message : "Failed to update person"] },
+    };
+  }
+}
+
+export async function deletePerson(
+  input: unknown
+): Promise<ActionResult<{ id: string }>> {
+  const parsed = deletePersonSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      errors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
+  }
+  try {
+    const userId = await ensureUser();
+    await prisma.$transaction(async (tx) => {
+      await tx.walletTransaction.deleteMany({
+        where: { personId: parsed.data.id, userId },
+      });
+      await tx.person.delete({
+        where: { id: parsed.data.id, userId },
+      });
+    });
+    revalidatePath("/persons");
+    return { success: true, data: { id: parsed.data.id } };
+  } catch (err) {
+    return {
+      success: false,
+      errors: { _form: [err instanceof Error ? err.message : "Failed to delete person"] },
     };
   }
 }

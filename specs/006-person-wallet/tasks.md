@@ -101,10 +101,10 @@
 
 ### Implementation for User Story 4
 
-- [ ] T029 [US4] Add edit person name support to `src/server/actions/persons.ts` (updatePerson)
-- [ ] T030 [US4] Add delete person server action in `src/server/actions/persons.ts` (deletePerson — cascading hard delete in Prisma transaction, per clarification)
-- [ ] T031 [US4] Add edit and delete UI to `app/_components/person-list.tsx` (inline edit name, delete with confirmation dialog)
-- [ ] T032 [US4] Add unique name warning to person creation UI (duplicate names allowed but display warning per edge case)
+- [x] T029 [US4] Add edit person name support to `src/server/actions/persons.ts` (updatePerson)
+- [x] T030 [US4] Add delete person server action in `src/server/actions/persons.ts` (deletePerson — cascading hard delete in Prisma transaction, per clarification)
+- [x] T031 [US4] Add edit and delete UI to `app/_components/person-list.tsx` (inline edit name, delete with confirmation dialog)
+- [x] T032 [US4] Add unique name warning to person creation UI (duplicate names allowed but display warning per edge case)
 
 **Checkpoint**: User Story 4 is fully functional — persons can be edited and deleted, all associated transactions removed on delete
 
