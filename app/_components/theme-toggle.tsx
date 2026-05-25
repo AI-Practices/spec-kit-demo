@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark" | "system";
 
@@ -22,10 +23,25 @@ function applyTheme(theme: Theme): void {
   document.documentElement.classList.toggle("dark", resolved === "dark");
 }
 
+function subscribeToThemeChanges(callback: () => void): () => void {
+  window.addEventListener("storage", callback);
+  window.addEventListener("theme-change", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("theme-change", callback);
+  };
+}
+
+function getThemeSnapshot(): Theme {
+  return getStoredTheme() ?? "system";
+}
+
+function getThemeServerSnapshot(): Theme {
+  return "system";
+}
+
 export default function ThemeToggle() {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    return getStoredTheme() ?? "system";
-  });
+  const theme = useSyncExternalStore(subscribeToThemeChanges, getThemeSnapshot, getThemeServerSnapshot);
 
   useEffect(() => {
     applyTheme(theme);
@@ -40,19 +56,13 @@ export default function ThemeToggle() {
     return () => mql.removeEventListener("change", handler);
   }, [theme]);
 
-  const setTheme = useCallback((next: Theme) => {
-    setThemeState(next);
-    applyTheme(next);
-    try {
-      localStorage.setItem("theme", next);
-    } catch {}
-  }, []);
-
   const cycle = useCallback(() => {
     const order: Theme[] = ["light", "dark", "system"];
     const idx = order.indexOf(theme);
-    setTheme(order[(idx + 1) % order.length]);
-  }, [theme, setTheme]);
+    const next = order[(idx + 1) % order.length];
+    try { localStorage.setItem("theme", next); } catch {}
+    window.dispatchEvent(new CustomEvent("theme-change"));
+  }, [theme]);
 
   const icons: Record<Theme, string> = {
     light: "☀",
@@ -64,7 +74,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={cycle}
-      className="ml-auto text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+      className="ml-auto text-sm font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
       aria-label={`Theme: ${theme}. Click to cycle.`}
     >
       {icons[theme]}
