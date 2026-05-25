@@ -57,28 +57,30 @@ The user removes an expense they no longer want to track. The expense is removed
 
 ### Edge Cases
 
-- What happens when the user tries to add an expense with a future date?
-- How does the app behave when there are zero expenses (empty state)?
-- What happens if the description is excessively long?
-- How is the initial state handled before any expenses are added?
+- **Future dates**: Rejected with a validation message; the date picker restricts selection to today or earlier
+- **Empty state**: When no expenses exist, the app shows an illustration, a "No expenses yet" message, and a prominent call-to-action button to add the first expense
+- **Long description**: TBD — validation length limit not yet specified (deferred to planning)
+- **Storage full**: If localStorage quota is exceeded, the app should display a user-friendly error message
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
-- **FR-001**: Users MUST be able to add an expense with amount (positive number), date, category, and description
+- **FR-001**: Users MUST be able to add an expense with amount (positive integer cents), date, category, and description
 - **FR-002**: All four fields (amount, date, category, description) MUST be required; the system MUST validate them before saving
-- **FR-003**: The amount field MUST accept positive numeric values only; negative and zero values MUST be rejected with a validation message
+- **FR-003**: The amount field MUST accept positive integer values (representing cents) only; negative, zero, and fractional values MUST be rejected with a validation message
 - **FR-004**: Users MUST be able to view all expenses sorted by date descending (most recent first)
 - **FR-005**: Each expense in the list MUST display the amount, date, category, and description
 - **FR-006**: Users MUST be able to delete any individual expense; the system MUST remove it from the list and update totals
 - **FR-007**: The dashboard MUST display the total (sum) of all expenses
 - **FR-008**: The dashboard MUST show a list of the 5 most recent expenses
-- **FR-009**: All expense data MUST persist across page reloads (survive browser refresh)
+- **FR-009**: All expense data MUST persist across page reloads via client-side storage (localStorage with typed wrapper)
+- **FR-010**: The date field MUST NOT accept a future date; if a future date is entered, the system MUST display a validation error and prevent saving
+- **FR-011**: When no expenses exist, the app MUST display an empty state with a descriptive message and a call-to-action to add the first expense
 
 ### Key Entities *(include if feature involves data)*
 
-- **Expense**: Represents a single financial transaction. Attributes: amount (positive number), date (calendar date), category (label such as Food, Transport, Housing, etc.), description (free text)
+- **Expense**: Represents a single financial transaction. Attributes: id (UUID, auto-generated), amount (positive integer cents), date (calendar date), category (label such as Food, Transport, Housing, etc.), description (free text)
 - **Category**: A classification label for grouping expenses. Predefined list of categories the user selects from when creating an expense
 
 ## Success Criteria *(mandatory)*
@@ -93,8 +95,20 @@ The user removes an expense they no longer want to track. The expense is removed
 ## Assumptions
 
 - Single-user personal app — no authentication or multi-user support needed
-- Data is stored client-side (no backend server required for v1)
+- Data is stored client-side using localStorage with a typed wrapper pattern (no backend server required for v1)
 - A predefined set of categories will be provided (e.g., Food & Dining, Transportation, Housing, Utilities, Entertainment, Shopping, Health, Other)
+- Expenses are uniquely identified by UUID generated via `crypto.randomUUID()`
+- Amounts are stored as integer cents to avoid floating-point precision issues
 - Web-based interface (leveraging the existing Next.js project setup)
 - No export, search, edit, or recurring expense features in this iteration
 - All categories are available upfront; no user-customizable categories in v1
+
+## Clarifications
+
+### Session 2026-05-25
+
+- Q: What storage mechanism should be used for client-side persistence? → A: localStorage with typed wrapper pattern
+- Q: How should expenses be uniquely identified? → A: UUID via `crypto.randomUUID()`
+- Q: How should monetary amounts be stored? → A: Integer cents to avoid floating-point precision issues
+- Q: What should the user see when there are zero expenses? → A: Empty state with illustration, message, and CTA button to add first expense
+- Q: Should future dates be allowed for expenses? → A: Rejected with validation error; date picker restricts to today or earlier
