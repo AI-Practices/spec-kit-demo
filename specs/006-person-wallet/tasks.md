@@ -12,9 +12,9 @@
 
 **Purpose**: Project initialization and database setup
 
-- [ ] T001 Install Prisma CLI and PostgreSQL driver (`npm install prisma @prisma/client`)
-- [ ] T002 Create `.env` with `DATABASE_URL` pointing to local PostgreSQL
-- [ ] T003 Initialize Prisma (`npx prisma init`) — generates `prisma/schema.prisma`
+- [x] T001 Install Prisma CLI and PostgreSQL driver (`npm install prisma @prisma/client`)
+- [x] T002 Create `.env` with `DATABASE_URL` pointing to local PostgreSQL
+- [x] T003 Initialize Prisma (`npx prisma init`) — generates `prisma/schema.prisma`
 
 ---
 
