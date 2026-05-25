@@ -33,9 +33,9 @@ description: "Tasks for Expense Tracker feature implementation"
 
 **Purpose**: Create directory structure and configure existing files for the expense tracker feature.
 
-- [ ] T001 Create directory structure for expense tracker feature: `mkdir -p app/expenses app/_components src/server/actions src/server/schemas src/lib`
+- [x] T001 Create directory structure for expense tracker feature: `mkdir -p app/expenses app/_components src/server/actions src/server/schemas src/lib`
 
-- [ ] T002 [P] Update app/layout.tsx — set metadata title to "Expense Tracker", update description, add basic nav links between Dashboard and Expenses
+- [x] T002 [P] Update app/layout.tsx — set metadata title to "Expense Tracker", update description, add basic nav links between Dashboard and Expenses
 
 ---
 
@@ -45,11 +45,11 @@ description: "Tasks for Expense Tracker feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T003 [P] Create shared types in `src/server/types.ts` — `Category` type (union of 8 predefined labels), `Expense` interface (id, amount, date, category, description), server action response types (`ActionResult<T>` with success/data or success/errors)
+- [x] T003 [P] Create shared types in `src/server/types.ts` — `Category` type (union of 8 predefined labels), `Expense` interface (id, amount, date, category, description), server action response types (`ActionResult<T>` with success/data or success/errors)
 
-- [ ] T004 [P] Create Zod validation schemas in `src/server/schemas/expense.ts` — `expenseSchema` for full expense input (amount: positive int, date: YYYY-MM-DD no future, category: enum, description: min 1 char max 200), `addExpenseInputSchema` (subset without id), `deleteExpenseInputSchema` (id required)
+- [x] T004 [P] Create Zod validation schemas in `src/server/schemas/expense.ts` — `expenseSchema` for full expense input (amount: positive int, date: YYYY-MM-DD no future, category: enum, description: min 1 char max 200), `addExpenseInputSchema` (subset without id), `deleteExpenseInputSchema` (id required)
 
-- [ ] T005 [P] Create localStorage typed wrapper in `src/lib/storage.ts` — `getExpenses(): Expense[]`, `saveExpenses(expenses: Expense[])`, `addExpense(input: Expense): Expense` (appends + saves), `removeExpense(id: string): void` (filters + saves). Handle missing key, JSON parse errors, quota errors.
+- [x] T005 [P] Create localStorage typed wrapper in `src/lib/storage.ts` — `getExpenses(): Expense[]`, `saveExpenses(expenses: Expense[])`, `addExpense(input: Expense): Expense` (appends + saves), `removeExpense(id: string): void` (filters + saves). Handle missing key, JSON parse errors, quota errors.
 
 **Checkpoint**: Foundation ready — user story implementation can now begin.
 
