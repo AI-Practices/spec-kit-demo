@@ -111,6 +111,34 @@ description: "Tasks for Expense Tracker feature implementation"
 
 ---
 
+## Phase 5b: Dark Mode UI (Priority: P1 — System Dark Mode)
+
+**Goal**: User sees the entire app in a dark color scheme when their OS is in dark mode, or when they manually toggle the theme. All components, forms, and navigation adapt correctly.
+
+**Spec**: `specs/002-dark-mode-ui/spec.md`
+
+**Independent Test**: Toggle OS appearance between light/dark — every page and component switches correctly. Use the manual theme toggle to override and persist preference.
+
+### Implementation Tasks
+
+- [ ] T019 [P] [US4] Update `app/globals.css` — configure Tailwind v4 dark variant to use class-based strategy (`@variant dark (&:where(.dark, .dark *))`) and define `dark:` CSS custom properties for all surfaces, borders, text, and error states used across the app
+
+- [ ] T020 [P] [US4] Create theme-toggle client component in `app/_components/theme-toggle.tsx` — `'use client'` component that manages theme state (light/dark/system). On mount: reads persisted preference from localStorage, applies `.dark` class to `<html>` based on preference or system media query. Listens for `matchMedia('prefers-color-scheme: dark')` changes when in "system" mode. Exposes a UI toggle (three-state button or dropdown) in the nav bar. Persists choice to localStorage key `"theme"`.
+
+- [ ] T021 [US4] Update `app/layout.tsx` — integrate `<ThemeToggle />` component into the navigation bar next to existing nav links
+
+- [ ] T022 [P] [US4] Update `app/_components/add-expense-form.tsx` — add `dark:` Tailwind classes: form container border, input/select/textarea backgrounds and borders, label text, button background and hover, error message text and background
+
+- [ ] T023 [P] [US4] Update `app/_components/expense-list.tsx` — add `dark:` Tailwind classes: row container borders, amount/text colors, category badge background and text, delete button colors and hover
+
+- [ ] T024 [P] [US4] Update `app/_components/dashboard-stats.tsx` — add `dark:` Tailwind classes: total card background and border, heading text, row container borders, amount/text colors
+
+- [ ] T025 [P] [US4] Update `app/_components/empty-state.tsx` — add `dark:` Tailwind classes: heading and description text, CTA button background and hover
+
+- [ ] T026 [US4] Update `app/page.tsx` and `app/expenses/page.tsx` — add `dark:` Tailwind classes to page-level structural elements (headings, wrapper divs)
+
+---
+
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 **Purpose**: Verify quality and fix any issues.
@@ -131,7 +159,8 @@ description: "Tasks for Expense Tracker feature implementation"
 - **Foundational (Phase 2)**: Depends on Setup completion — BLOCKS all user stories
 - **User Stories (Phase 3-5)**: All depend on Foundational phase completion
   - Stories proceed sequentially in priority order (P1 → P2 → P3)
-- **Polish (Phase 6)**: Depends on all user stories being complete
+- **Dark Mode (Phase 5b)**: Depends on all user stories (Phase 3-5) being complete — touches all UI components
+- **Polish (Phase 6)**: Depends on all user stories and Phase 5b being complete
 
 ### User Story Dependencies
 
@@ -155,6 +184,7 @@ description: "Tasks for Expense Tracker feature implementation"
 | Phase 3 (US1) | T006 parallel with T007 |
 | Phase 4 (US2) | T009, T010, T011 can all run in parallel |
 | Phase 5 (US3) | T014 is standalone |
+| Phase 5b (Dark Mode) | T019-T020 parallel; T021 depends on T020; T022-T026 parallel with each other and T021 |
 | Phase 6 (Polish) | T016, T017, T018 sequential |
 
 ---
