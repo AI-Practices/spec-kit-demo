@@ -1,21 +1,19 @@
 'use client';
 
-import { useState, useCallback, useRef } from "react";
-import { useSyncExternalStore } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { getExpenses } from "@/src/server/actions/get-expenses";
 import { setBudget as setBudgetAction } from "@/src/server/actions/set-budget";
 import { removeBudget as removeBudgetAction } from "@/src/server/actions/remove-budget";
 import { getBudgets, setBudget as saveBudget, removeBudget as removeBudgetFromStorage, subscribe } from "@/src/lib/budget-storage";
-import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
 import { CATEGORY_LABELS } from "@/src/server/types";
-import type { Budget, Expense } from "@/src/server/types";
+import type { LegacyBudget, Expense } from "@/src/server/types";
 import MonthPicker from "@/app/_components/month-picker";
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
-const serverSnapshotBudgets: Budget[] = [];
-const serverSnapshotExpenses: Expense[] = [];
+const serverSnapshotBudgets: LegacyBudget[] = [];
 
 function getCurrentYearMonth(): { year: number; month: number } {
   const now = new Date();
@@ -32,27 +30,18 @@ export default function BudgetManager() {
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
 
-  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
+  useEffect(() => {
+    getExpenses().then((result) => {
+      if (result.success) setExpenses(result.data);
+    });
+  }, []);
+
   const allBudgets = useSyncExternalStore(
     subscribe,
-    () => {
-      const next = getBudgets();
-      if (next !== budgetsRef.current) budgetsRef.current = next;
-      return budgetsRef.current;
-    },
+    () => getBudgets(),
     () => serverSnapshotBudgets,
-  );
-
-  const expensesRef = useRef<Expense[]>(serverSnapshotExpenses);
-  const allExpenses = useSyncExternalStore(
-    subscribeExpenses,
-    () => {
-      const next = getExpenses();
-      if (next !== expensesRef.current) expensesRef.current = next;
-      return expensesRef.current;
-    },
-    () => serverSnapshotExpenses,
   );
 
   const monthStr = toMonthString(year, month);
@@ -80,7 +69,7 @@ export default function BudgetManager() {
     }
   }
 
-  async function handleEditBudget(budget: Budget) {
+  async function handleEditBudget(budget: LegacyBudget) {
     setCategory(budget.category);
     setAmount(String(budget.amount));
   }
@@ -98,12 +87,12 @@ export default function BudgetManager() {
     removeBudgetFromStorage(budgetCategory, monthStr);
   }
 
-  const handleMonthChange = useCallback((newYear: number, newMonth: number) => {
+  const handleMonthChange = (newYear: number, newMonth: number) => {
     setYear(newYear);
     setMonth(newMonth);
-  }, []);
+  };
 
-  const monthExpenses = allExpenses.filter((e) => e.date.startsWith(monthStr));
+  const monthExpenses = expenses.filter((e) => e.date.startsWith(monthStr));
 
   const summaries = CATEGORY_LABELS.map((cat) => {
     const budget = monthBudgets.find((b) => b.category === cat);

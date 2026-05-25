@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  persons             Person[]
+  walletTransactions  WalletTransaction[]
+  expenses            Expense[]
+  categories          Category[]
+  budgets             Budget[]
+}
+
+model Person {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  user               User                @relation(fields: [userId], references: [id])
+  walletTransactions WalletTransaction[]
+
+  @@index([userId, deletedAt])
+  @@index([userId, name])
+}
+
+model WalletTransaction {
+  id        String   @id @default(cuid())
+  userId    String
+  personId  String
+  type      String
+  amount    Int
+  date      DateTime
+  notes     String?
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  person Person @relation(fields: [personId], references: [id])
+
+  @@index([personId, date])
+  @@index([userId, date])
+  @@index([userId, personId])
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  userId      String
+  categoryId  String
+  amount      Int
+  date        DateTime
+  description String
+  createdAt   DateTime @default(now())
+  deletedAt   DateTime?
+
+  user     User     @relation(fields: [userId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@index([userId, date])
+  @@index([userId, categoryId])
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  type      String
+  icon      String?
+  color     String?
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+
+  user    User      @relation(fields: [userId], references: [id])
+  expenses Expense[]
+  budgets  Budget[]
+
+  @@unique([userId, name])
+  @@index([userId, deletedAt])
+}
+
+model Budget {
+  id         String   @id @default(cuid())
+  userId     String
+  categoryId String
+  amount     Int
+  period     String
+  startDate  DateTime
+  endDate    DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@index([userId, categoryId, period])
+}

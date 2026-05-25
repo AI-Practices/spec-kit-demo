@@ -40,6 +40,9 @@ export default function RootLayout({
           <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
             Budgets
           </Link>
+          <Link href="/persons" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
+            Persons
+          </Link>
           <ThemeToggle />
         </nav>
         <main className="flex-1">{children}</main>

@@ -1,33 +1,50 @@
 'use client';
 
-import { useSyncExternalStore } from "react";
-import { getExpenses, removeExpense, subscribe } from "@/src/lib/storage";
-import type { Expense } from "@/src/server/types";
+import { useState, useEffect } from "react";
+import { getExpenses } from "@/src/server/actions/get-expenses";
 import { deleteExpense as deleteExpenseAction } from "@/src/server/actions/delete-expense";
+import type { Expense } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
-
-const serverSnapshot: Expense[] = [];
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
 
 export default function ExpenseList() {
-  const allExpenses = useSyncExternalStore(
-    subscribe,
-    () => getExpenses(),
-    () => serverSnapshot
-  );
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const expenses: Expense[] = [...allExpenses].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  useEffect(() => {
+    getExpenses().then((result) => {
+      if (result.success) {
+        const sorted = [...result.data].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setExpenses(sorted);
+      }
+      setLoading(false);
+    });
+  }, []);
 
   async function handleDelete(id: string) {
     const result = await deleteExpenseAction({ id });
     if (result.success) {
-      removeExpense(id);
+      const refreshed = await getExpenses();
+      if (refreshed.success) {
+        const sorted = [...refreshed.data].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setExpenses(sorted);
+      }
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-16">
+        <p className="text-zinc-500 dark:text-zinc-400">Loading expenses...</p>
+      </div>
+    );
   }
 
   if (expenses.length === 0) {

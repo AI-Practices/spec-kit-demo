@@ -3,7 +3,7 @@ import { CATEGORY_LABELS } from "@/src/server/types";
 
 const monthRegex = /^\d{4}-(0[1-9]|1[0-2])$/;
 
-export const budgetSchema = z.object({
+export const legacyBudgetSchema = z.object({
   id: z.string(),
   category: z.enum(CATEGORY_LABELS as [string, ...string[]]),
   amount: z.number().int("Amount must be a whole number (cents)").positive("Amount must be positive"),

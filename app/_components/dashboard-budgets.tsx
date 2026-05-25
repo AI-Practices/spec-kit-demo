@@ -1,14 +1,13 @@
 'use client';
 
-import { useSyncExternalStore, useRef } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { getExpenses } from "@/src/server/actions/get-expenses";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
-import { getExpenses, subscribe as subscribeExpenses } from "@/src/lib/storage";
-import type { Budget, Expense } from "@/src/server/types";
+import type { LegacyBudget, Expense } from "@/src/server/types";
 import Link from "next/link";
 import BudgetProgressBar from "@/app/_components/budget-progress-bar";
 
-const serverSnapshotBudgets: Budget[] = [];
-const serverSnapshotExpenses: Expense[] = [];
+const serverSnapshotBudgets: LegacyBudget[] = [];
 
 function formatAmount(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
@@ -19,20 +18,17 @@ function getCurrentMonth(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
 
-function computeSummaries(budgets: Budget[], expenses: Expense[], month: string) {
+function computeSummaries(budgets: LegacyBudget[], expenses: Expense[], month: string) {
   const monthExpenses = expenses.filter((e) => e.date.startsWith(month));
-
   return budgets
     .filter((b) => b.month === month)
     .map((budget) => {
       const spent = monthExpenses
         .filter((e) => e.category === budget.category)
         .reduce((sum, e) => sum + e.amount, 0);
-
       const remaining = budget.amount - spent;
       const percentage = budget.amount > 0 ? (spent / budget.amount) * 100 : 0;
       const status = percentage >= 100 ? "overspent" : percentage >= 80 ? "warning" : "safe";
-
       return {
         category: budget.category,
         budgetAmount: budget.amount,
@@ -45,30 +41,22 @@ function computeSummaries(budgets: Budget[], expenses: Expense[], month: string)
 }
 
 export default function DashboardBudgets() {
-  const budgetsRef = useRef<Budget[]>(serverSnapshotBudgets);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+
+  useEffect(() => {
+    getExpenses().then((result) => {
+      if (result.success) setExpenses(result.data);
+    });
+  }, []);
+
   const allBudgets = useSyncExternalStore(
     subscribeBudgets,
-    () => {
-      const next = getBudgets();
-      if (next !== budgetsRef.current) budgetsRef.current = next;
-      return budgetsRef.current;
-    },
+    () => getBudgets(),
     () => serverSnapshotBudgets,
   );
 
-  const expensesRef = useRef<Expense[]>(serverSnapshotExpenses);
-  const allExpenses = useSyncExternalStore(
-    subscribeExpenses,
-    () => {
-      const next = getExpenses();
-      if (next !== expensesRef.current) expensesRef.current = next;
-      return expensesRef.current;
-    },
-    () => serverSnapshotExpenses,
-  );
-
   const month = getCurrentMonth();
-  const summaries = computeSummaries(allBudgets, allExpenses, month);
+  const summaries = computeSummaries(allBudgets, expenses, month);
 
   if (summaries.length === 0) {
     return (
