@@ -6,7 +6,11 @@ import { addExpense as addExpenseToStorage } from "@/src/lib/storage";
 import { CATEGORY_LABELS } from "@/src/server/types";
 import type { Category } from "@/src/server/types";
 
-export default function AddExpenseForm() {
+export default function AddExpenseForm({
+  onExpenseAdded,
+}: {
+  onExpenseAdded?: () => void;
+}) {
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const [quotaError, setQuotaError] = useState<string | null>(null);
 
@@ -35,6 +39,7 @@ export default function AddExpenseForm() {
 
     const form = document.getElementById("add-expense-form") as HTMLFormElement;
     form?.reset();
+    onExpenseAdded?.();
   }
 
   const today = new Date().toISOString().slice(0, 10);

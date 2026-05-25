@@ -81,15 +81,15 @@ description: "Tasks for Expense Tracker feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T009 [P] [US2] Create empty-state client component in `app/_components/empty-state.tsx` — `'use client'` component showing "No expenses yet" message, a simple illustration (could be an SVG or emoji-based graphic), and a "Add Your First Expense" button linking to /expenses
+- [x] T009 [P] [US2] Create empty-state client component in `app/_components/empty-state.tsx` — `'use client'` component showing "No expenses yet" message, a simple illustration (could be an SVG or emoji-based graphic), and a "Add Your First Expense" button linking to /expenses
 
-- [ ] T010 [P] [US2] Create expense-list client component in `app/_components/expense-list.tsx` — `'use client'` component that reads expenses from localStorage via `getExpenses()`, sorts by date descending, and renders each expense row showing: formatted amount ($X.XX), date (YYYY-MM-DD), category badge, and description. Empty state delegates to `empty-state` component when the list is empty.
+- [x] T010 [P] [US2] Create expense-list client component in `app/_components/expense-list.tsx` — `'use client'` component that reads expenses from localStorage via `getExpenses()`, sorts by date descending, and renders each expense row showing: formatted amount ($X.XX), date (YYYY-MM-DD), category badge, and description. Empty state delegates to `empty-state` component when the list is empty.
 
-- [ ] T011 [P] [US2] Create dashboard-stats client component in `app/_components/dashboard-stats.tsx` — `'use client'` component that reads expenses from localStorage, computes total sum (displayed as $X.XX), and renders the top 5 most recent expenses in a compact list. Empty state delegates to `empty-state` component.
+- [x] T011 [P] [US2] Create dashboard-stats client component in `app/_components/dashboard-stats.tsx` — `'use client'` component that reads expenses from localStorage, computes total sum (displayed as $X.XX), and renders the top 5 most recent expenses in a compact list. Empty state delegates to `empty-state` component.
 
-- [ ] T012 [US2] Update `app/page.tsx` — replace default Next.js content with the dashboard layout: render `dashboard-stats` component, add link to /expenses page. Use `empty-state` fallback when no expenses exist.
+- [x] T012 [US2] Update `app/page.tsx` — replace default Next.js content with the dashboard layout: render `dashboard-stats` component, add link to /expenses page. Use `empty-state` fallback when no expenses exist.
 
-- [ ] T013 [US2] Update `app/expenses/page.tsx` — integrate `expense-list` component below the add form. Pass a refresh mechanism so the list re-renders after a new expense is added (e.g., increment a key counter or use `useSyncExternalStore` pattern).
+- [x] T013 [US2] Update `app/expenses/page.tsx` — integrate `expense-list` component below the add form. Pass a refresh mechanism so the list re-renders after a new expense is added (e.g., increment a key counter or use `useSyncExternalStore` pattern).
 
 **Checkpoint**: User Stories 1 AND 2 are both functional — user can add, view, and see dashboard totals.
 
