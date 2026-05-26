@@ -33,8 +33,8 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 **Purpose**: Install dependencies and initialize project structure
 
-- [ ] T001 Install `xlsx` dependency via `npm install xlsx`
-- [ ] T002 [P] Create `lib/excel-utils.ts` placeholder (function signatures and types only, no implementation)
+- [x] T001 Install `xlsx` dependency via `npm install xlsx`
+- [x] T002 [P] Create `lib/excel-utils.ts` placeholder (function signatures and types only, no implementation)
 
 **Checkpoint**: Dependencies and file structure ready
 
@@ -46,10 +46,10 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Implement `parseSheetName(name: string): { month: number; year: number } | null` in `lib/excel-utils.ts` — validates `May-2026` format, returns month number (1-12) and year
-- [ ] T004 [P] Implement `parseDebitFormula(formula: string): number[]` in `lib/excel-utils.ts` — parses `=SUM(-4100-900-1020)` → `[4100, 900, 1020]`; returns empty array for invalid patterns
-- [ ] T005 [P] Implement `buildMonthSheetName(month: number, year: number): string` in `lib/excel-utils.ts` — converts numeric month/year to `May-2026` format
-- [ ] T006 Export all utility types (`MonthlyLedger`, `LedgerRow`, `ParsedTransaction`, `ImportResult`, `ImportError`) from `lib/excel-utils.ts` per data-model.md
+- [x] T003 Implement `parseSheetName(name: string): { month: number; year: number } | null` in `lib/excel-utils.ts` — validates `May-2026` format, returns month number (1-12) and year
+- [x] T004 [P] Implement `parseDebitFormula(formula: string): number[]` in `lib/excel-utils.ts` — parses `=SUM(-4100-900-1020)` → `[4100, 900, 1020]`; returns empty array for invalid patterns
+- [x] T005 [P] Implement `buildMonthSheetName(month: number, year: number): string` in `lib/excel-utils.ts` — converts numeric month/year to `May-2026` format
+- [x] T006 Export all utility types (`MonthlyLedger`, `LedgerRow`, `ParsedTransaction`, `ImportResult`, `ImportError`) from `lib/excel-utils.ts` per data-model.md
 
 **Checkpoint**: `lib/excel-utils.ts` provides parse, validate, and format functions that all stories consume
 
