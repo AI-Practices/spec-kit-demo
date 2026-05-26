@@ -77,8 +77,9 @@ export function parseDebitFormula(formula: string): number[] {
   const trimmed = formula.trim();
   const match = trimmed.match(/^=?\s*SUM\((.+)\)\s*$/i);
   if (!match) return [];
-  const inner = match[1];
+  const inner = match[1].trim();
   if (!inner) return [];
+  if (!inner.startsWith("-")) return [];
   const parts = inner.split("-").filter(Boolean);
   const amounts: number[] = [];
   for (const part of parts) {
@@ -178,6 +179,123 @@ export function parseWorkbook(fileBuffer: Buffer, sheetName?: string): MonthlyLe
   }
 
   return { sheetName: targetSheet, month: parsed.month, year: parsed.year, rows };
+}
+
+export function createMonthlyLedger(
+  transactions: ParsedTransaction[],
+  month: number,
+  year: number,
+): Buffer {
+  const sheetName = buildMonthSheetName(month, year);
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  if (transactions.length === 0) {
+    return createTemplate(month, year);
+  }
+
+  const credits = transactions.filter((t) => t.type === "credit");
+  const debits = transactions.filter((t) => t.type === "debit");
+
+  const creditByDay: Record<number, number> = {};
+  for (const c of credits) {
+    const day = parseInt(c.date.split("-")[2], 10);
+    if (day >= 1 && day <= daysInMonth) {
+      creditByDay[day] = (creditByDay[day] || 0) + c.amount;
+    }
+  }
+
+  const debitByDesc: Record<string, number[]> = {};
+  for (const d of debits) {
+    const desc = d.notes || "Debit";
+    if (!debitByDesc[desc]) debitByDesc[desc] = [];
+    debitByDesc[desc].push(d.amount);
+  }
+
+  const rows: (string | number)[][] = [];
+  rows.push(["Day", sheetName]);
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const label = DAY_LABELS[day - 1];
+    const amount = creditByDay[day];
+    rows.push([label, amount != null ? amount : ""]);
+  }
+
+  for (const [desc, amounts] of Object.entries(debitByDesc)) {
+    const formula = `=SUM(${amounts.map((a) => `-${a}`).join("")})`;
+    rows.push([desc, formula]);
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"] = [{ wch: 20 }, { wch: 16 }];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+
+  return XLSX.write(wb, { type: "buffer", bookType: "xlsx" }) as Buffer;
+}
+
+export function validateTransactions(
+  transactions: ParsedTransaction[],
+  month: number,
+  year: number,
+  sheetName: string,
+): ImportError[] {
+  const errors: ImportError[] = [];
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  for (const tx of transactions) {
+    const dateMatch = tx.date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (dateMatch) {
+      const txYear = parseInt(dateMatch[1], 10);
+      const txMonth = parseInt(dateMatch[2], 10);
+      const txDay = parseInt(dateMatch[3], 10);
+
+      if (txYear !== year || txMonth !== month) {
+        errors.push({
+          cellRef: tx.cellRef,
+          message: `Date "${tx.date}" is outside the expected month ${sheetName}`,
+          type: "error",
+        });
+      }
+
+      if (txDay < 1 || txDay > daysInMonth) {
+        errors.push({
+          cellRef: tx.cellRef,
+          message: `Day ${txDay} is out of range for ${sheetName} (month has ${daysInMonth} days)`,
+          type: "warning",
+        });
+      }
+    }
+
+    if (tx.type === "credit") {
+      if (tx.amount < 0) {
+        errors.push({
+          cellRef: tx.cellRef,
+          message: `Credit amount must be 0 or more, got ${tx.amount}`,
+          type: "error",
+        });
+      }
+    }
+
+    if (tx.type === "debit") {
+      if (tx.amount <= 0) {
+        errors.push({
+          cellRef: tx.cellRef,
+          message: `Debit amount must be positive, got ${tx.amount}`,
+          type: "error",
+        });
+      }
+      if (!tx.notes || tx.notes.trim() === "") {
+        errors.push({
+          cellRef: tx.cellRef,
+          message: "Debit must have a non-empty description/notes",
+          type: "error",
+        });
+      }
+    }
+  }
+
+  return errors;
 }
 
 export function ledgerToTransactions(

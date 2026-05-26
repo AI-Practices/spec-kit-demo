@@ -3,9 +3,9 @@
 import { prisma } from "@/src/server/db";
 import { revalidatePath } from "next/cache";
 import * as XLSX from "xlsx";
-import { parseWorkbook, ledgerToTransactions, parseSheetName } from "@/lib/excel-utils";
+import { parseWorkbook, ledgerToTransactions, parseSheetName, validateTransactions } from "@/lib/excel-utils";
 import type { ActionResult } from "@/src/server/types";
-import type { ParsedTransaction, ImportResult, ImportErrors } from "@/lib/excel-utils";
+import type { ParsedTransaction, ImportResult, ImportErrors, ImportError } from "@/lib/excel-utils";
 
 export type ImportPreview = {
   preview: ParsedTransaction[];
@@ -13,6 +13,8 @@ export type ImportPreview = {
   month: number;
   year: number;
   availableSheets: string[];
+  errors: ImportError[];
+  warnings: ImportError[];
 };
 
 const DEFAULT_USER_EMAIL = "admin@local.dev";
@@ -62,9 +64,14 @@ export async function importTransactions(
 
   const availableSheets = wb.SheetNames.filter((name) => parseSheetName(name) !== null);
   if (availableSheets.length === 0) {
+    const allSheets = wb.SheetNames.join(", ");
     return {
       success: false,
-      errors: { file: ["No sheets with valid Month-Year names found in the file"] },
+      errors: {
+        file: [
+          `No sheets with valid Month-Year names found in the file. Expected format like "May-2026" or "May 2026". Found sheets: ${allSheets || "(none)"}`,
+        ],
+      },
     };
   }
 
@@ -96,6 +103,10 @@ export async function importTransactions(
       errors: { file: ["No valid transactions found in the file"] },
     };
   }
+
+  const allIssues = validateTransactions(preview, month, year, sheetName);
+  const errors = allIssues.filter((e) => e.type === "error");
+  const warnings = allIssues.filter((e) => e.type === "warning");
 
   if (confirmed) {
     try {
@@ -151,6 +162,6 @@ export async function importTransactions(
 
   return {
     success: true,
-    data: { preview, sheetName, month, year, availableSheets },
+    data: { preview, sheetName, month, year, availableSheets, errors, warnings },
   };
 }

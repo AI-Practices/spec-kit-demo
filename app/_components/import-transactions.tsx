@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { importTransactions } from "@/src/server/actions/import-transactions";
-import type { ParsedTransaction, ImportResult } from "@/lib/excel-utils";
+import type { ParsedTransaction, ImportResult, ImportError } from "@/lib/excel-utils";
 import type { ImportPreview } from "@/src/server/actions/import-transactions";
 
 interface ImportTransactionsProps {
@@ -13,7 +13,7 @@ interface ImportTransactionsProps {
 type ImportState =
   | { phase: "idle" }
   | { phase: "parsing" }
-  | { phase: "preview"; preview: ParsedTransaction[]; sheetName: string; month: number; year: number; availableSheets: string[] }
+  | { phase: "preview"; preview: ParsedTransaction[]; sheetName: string; month: number; year: number; availableSheets: string[]; errors: ImportError[]; warnings: ImportError[] }
   | { phase: "importing" }
   | { phase: "success"; result: ImportResult }
   | { phase: "error"; message: string };
@@ -50,6 +50,8 @@ export default function ImportTransactions({ personId, onImportComplete }: Impor
         month: data.month,
         year: data.year,
         availableSheets: data.availableSheets,
+        errors: data.errors ?? [],
+        warnings: data.warnings ?? [],
       });
     }
   }, [personId]);
@@ -232,15 +234,55 @@ export default function ImportTransactions({ personId, onImportComplete }: Impor
               </div>
             )}
 
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
-              {state.preview.length} transaction{state.preview.length !== 1 ? "s" : ""} found
-              {state.preview.filter((t) => t.type === "credit").length > 0 && (
-                <> — <span className="text-positive font-medium">{state.preview.filter((t) => t.type === "credit").length} credits</span></>
+            <div className="flex items-center gap-3 mb-4 flex-wrap">
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                {state.preview.length} transaction{state.preview.length !== 1 ? "s" : ""} found
+                {state.preview.filter((t) => t.type === "credit").length > 0 && (
+                  <> — <span className="text-positive font-medium">{state.preview.filter((t) => t.type === "credit").length} credits</span></>
+                )}
+                {state.preview.filter((t) => t.type === "debit").length > 0 && (
+                  <> — <span className="text-negative font-medium">{state.preview.filter((t) => t.type === "debit").length} debits</span></>
+                )}
+              </p>
+              {state.warnings.length > 0 && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                  {state.warnings.length} warning{state.warnings.length !== 1 ? "s" : ""}
+                </span>
               )}
-              {state.preview.filter((t) => t.type === "debit").length > 0 && (
-                <> — <span className="text-negative font-medium">{state.preview.filter((t) => t.type === "debit").length} debits</span></>
+              {state.errors.length > 0 && (
+                <span className="text-xs font-medium px-2 py-0.5 rounded bg-negative/10 text-negative">
+                  {state.errors.length} error{state.errors.length !== 1 ? "s" : ""}
+                </span>
               )}
-            </p>
+            </div>
+
+            {state.errors.length > 0 && (
+              <div className="mb-4 rounded-lg border border-negative/20 bg-negative/5 p-3">
+                <p className="text-xs font-semibold text-negative mb-2">Errors (import blocked)</p>
+                <div className="space-y-1 max-h-32 overflow-y-auto">
+                  {state.errors.map((e, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs">
+                      <span className="shrink-0 font-mono text-negative/70">{e.cellRef}</span>
+                      <span className="text-zinc-600 dark:text-zinc-400">{e.message}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {state.warnings.length > 0 && (
+              <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-900/20">
+                <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2">Warnings</p>
+                <div className="space-y-1 max-h-24 overflow-y-auto">
+                  {state.warnings.map((w, i) => (
+                    <div key={i} className="flex items-start gap-2 text-xs">
+                      <span className="shrink-0 font-mono text-amber-600 dark:text-amber-400">{w.cellRef}</span>
+                      <span className="text-zinc-600 dark:text-zinc-400">{w.message}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="flex-1 overflow-y-auto space-y-1 mb-4">
               {state.preview.slice(0, 100).map((tx, i) => (
@@ -281,9 +323,16 @@ export default function ImportTransactions({ personId, onImportComplete }: Impor
               </button>
               <button
                 onClick={handleConfirm}
-                className="px-4 py-2 text-sm font-medium text-white bg-accent rounded transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent"
+                disabled={state.errors.length > 0}
+                className={`px-4 py-2 text-sm font-medium text-white rounded transition-colors focus:outline-none focus:ring-2 focus:ring-accent ${
+                  state.errors.length > 0
+                    ? "bg-zinc-300 cursor-not-allowed dark:bg-zinc-600"
+                    : "bg-accent hover:bg-accent-hover"
+                }`}
               >
-                Import {state.preview.length} Transaction{state.preview.length !== 1 ? "s" : ""}
+                {state.errors.length > 0
+                  ? "Fix errors to import"
+                  : `Import ${state.preview.length} Transaction${state.preview.length !== 1 ? "s" : ""}`}
               </button>
             </div>
           </div>

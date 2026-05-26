@@ -100,13 +100,13 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 ### Implementation for User Story 3
 
-- [ ] T018 [US3] Implement `validateTransactions(transactions: ParsedTransaction[]): ImportError[]` in `lib/excel-utils.ts` — validates each transaction against `createCreditSchema`/`createDebitSchema` rules (positive amounts, non-empty debit notes, valid dates within month) and returns structured errors with `cellRef` and `message`
-- [ ] T019 [US3] Enhance `import-transactions.ts` server action to return structured `ImportErrors` on validation failure — errors grouped by type (formula, cell value, missing sheet, date mismatch) with cell references
-- [ ] T020 [US3] Enhance `import-transactions.tsx` preview modal to display errors inline — error list grouped by category, each showing `cellRef` and human-readable message, with "Import" disabled when errors exist
-- [ ] T021 [US3] Add out-of-range day warning display to `import-transactions.tsx` — when parsed file has day values in non-existent days (e.g., Day 31 in April), show warning count in preview but allow import to proceed (skip warned cells)
-- [ ] T022 [US3] Handle edge case: formula with only zeros or positive numbers — validate as errors (debits must be negative/non-zero), show cell-level error message
-- [ ] T023 [US3] Handle edge case: missing month sheet or unrecognized sheet name format — validate during parse step, return early error listing expected vs found sheets
-- [ ] T024 [US3] Handle edge case: corrupted `.xlsx` or non-Excel file — catch `xlsx` parse error, return user-friendly error message in preview
+- [x] T018 [US3] Implement `validateTransactions(transactions: ParsedTransaction[]): ImportError[]` in `lib/excel-utils.ts` — validates each transaction against `createCreditSchema`/`createDebitSchema` rules (positive amounts, non-empty debit notes, valid dates within month) and returns structured errors with `cellRef` and `message`
+- [x] T019 [US3] Enhance `import-transactions.ts` server action to return structured `ImportErrors` on validation failure — errors grouped by type (formula, cell value, missing sheet, date mismatch) with cell references
+- [x] T020 [US3] Enhance `import-transactions.tsx` preview modal to display errors inline — error list grouped by category, each showing `cellRef` and human-readable message, with "Import" disabled when errors exist
+- [x] T021 [US3] Add out-of-range day warning display to `import-transactions.tsx` — when parsed file has day values in non-existent days (e.g., Day 31 in April), show warning count in preview but allow import to proceed (skip warned cells)
+- [x] T022 [US3] Handle edge case: formula with only zeros or positive numbers — validate as errors (debits must be negative/non-zero), show cell-level error message
+- [x] T023 [US3] Handle edge case: missing month sheet or unrecognized sheet name format — validate during parse step, return early error listing expected vs found sheets
+- [x] T024 [US3] Handle edge case: corrupted `.xlsx` or non-Excel file — catch `xlsx` parse error, return user-friendly error message in preview
 
 **Checkpoint**: All validation error types produce clear cell-level messages; out-of-range days produce warnings but allow import; corrupted files handled gracefully
 
@@ -120,11 +120,11 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 ### Implementation for User Story 4
 
-- [ ] T025 [P] [US4] Implement `createMonthlyLedger(transactions: ParsedTransaction[], month: number, year: number): Buffer` in `lib/excel-utils.ts` — groups credits by description+day, debits by description+date into `=SUM(...)` formulas; generates workbook matching the template format
-- [ ] T026 [US4] Implement `export-transactions.ts` server action at `src/server/actions/export-transactions.ts` — accepts `personId`, `month`, `year`; queries transactions for that person+month via Prisma; separates credits and debits; calls `createMonthlyLedger`; returns Excel file as `Blob`
-- [ ] T027 [US4] Implement `export-button.tsx` component at `app/_components/export-button.tsx` — `'use client'` button with month/year picker, triggers download of exported Excel file, shows loading state during generation
-- [ ] T028 [US4] Wire Export button into person summary page — add `<ExportButton personId={person.id} />` to `app/persons/[id]/summary/page.tsx`
-- [ ] T029 [US4] Handle edge case: empty month export — when no transactions exist for the selected month, export an empty template with correct headers (same as template download)
+- [x] T025 [P] [US4] Implement `createMonthlyLedger(transactions: ParsedTransaction[], month: number, year: number): Buffer` in `lib/excel-utils.ts` — groups credits by description+day, debits by description+date into `=SUM(...)` formulas; generates workbook matching the template format
+- [x] T026 [US4] Implement `export-transactions.ts` server action at `src/server/actions/export-transactions.ts` — accepts `personId`, `month`, `year`; queries transactions for that person+month via Prisma; separates credits and debits; calls `createMonthlyLedger`; returns Excel file as `Blob`
+- [x] T027 [US4] Implement `export-button.tsx` component at `app/_components/export-button.tsx` — `'use client'` button with month/year picker, triggers download of exported Excel file, shows loading state during generation
+- [x] T028 [US4] Wire Export button into person summary page — add `<ExportButton personId={person.id} />` to `app/persons/[id]/summary/page.tsx`
+- [x] T029 [US4] Handle edge case: empty month export — when no transactions exist for the selected month, export an empty template with correct headers (same as template download)
 
 **Checkpoint**: Export generates correct ledger format; re-importing exported file passes validation and produces identical records
 
