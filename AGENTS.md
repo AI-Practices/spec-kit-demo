@@ -13,7 +13,7 @@ Key Next.js 16 changes (see docs for full list):
 <!-- END:nextjs-agent-rules -->
 
 <!-- SPECKIT START -->
-The current implementation plan lives in `specs/006-person-wallet/plan.md`.
+The current implementation plan lives in `specs/007-wallet-ui-enhancement/plan.md`.
 Read it before making code changes.
 <!-- SPECKIT END -->
 
