@@ -8,7 +8,7 @@ export default function ExpensesPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8">
+    <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold mb-6 dark:text-zinc-100">Expenses</h1>
       <AddExpenseForm onExpenseAdded={() => setRefreshKey((k) => k + 1)} />
       <ExpenseList key={refreshKey} />

@@ -150,9 +150,9 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 ### Implementation for User Story 5
 
-- [ ] T029 [P] [US5] Update `app/page.tsx` dashboard with responsive grid layout — change container from `max-w-2xl` to `max-w-7xl` with responsive padding, apply `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6` for card layout
-- [ ] T030 [P] [US5] Update navigation in `app/layout.tsx` for mobile — ensure nav links remain accessible without overlap on screens down to 320px; add responsive padding classes
-- [ ] T031 [P] [US5] Update detail page wrappers (`app/budgets/page.tsx`, `app/expenses/page.tsx`, `app/persons/page.tsx`, and person sub-pages) with responsive container padding — `mx-auto max-w-2xl px-4 sm:px-6 lg:px-8`
+- [X] T029 [P] [US5] Update `app/page.tsx` dashboard with responsive grid layout — change container from `max-w-2xl` to `max-w-7xl` with responsive padding, apply `grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6` for card layout
+- [X] T030 [P] [US5] Update navigation in `app/layout.tsx` for mobile — ensure nav links remain accessible without overlap on screens down to 320px; add responsive padding classes
+- [X] T031 [P] [US5] Update detail page wrappers (`app/budgets/page.tsx`, `app/expenses/page.tsx`, `app/persons/page.tsx`, and person sub-pages) with responsive container padding — `mx-auto max-w-2xl px-4 sm:px-6 lg:px-8`
 
 **Checkpoint**: Responsive layout functional at all breakpoints — all pages scroll-free from 320px to 1920px
 

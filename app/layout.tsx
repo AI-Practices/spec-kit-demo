@@ -31,20 +31,20 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <nav className="flex items-center gap-6 px-6 py-4 border-b border-border bg-surface/80 dark:bg-zinc-900/80">
-          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
+        <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 px-4 sm:px-6 py-4 border-b border-border bg-surface/80 dark:bg-zinc-900/80">
+          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors whitespace-nowrap">
             Dashboard
           </Link>
-          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
+          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors whitespace-nowrap">
             Expenses
           </Link>
-          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
+          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors whitespace-nowrap">
             Budgets
           </Link>
-          <Link href="/persons" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
+          <Link href="/persons" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors whitespace-nowrap">
             Persons
           </Link>
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
             <CurrencySelector />
             <ThemeToggle />
           </div>
