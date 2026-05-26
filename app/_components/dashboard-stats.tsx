@@ -7,12 +7,9 @@ import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-stor
 import type { Expense, PersonWithBalance, LegacyBudget } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
 import DashboardBudgets from "@/app/_components/dashboard-budgets";
+import { useCurrency } from "@/lib/use-currency";
 
 const serverSnapshotBudgets: LegacyBudget[] = [];
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
 
 function getCurrentMonth(): string {
   const now = new Date();
@@ -20,6 +17,7 @@ function getCurrentMonth(): string {
 }
 
 export default function DashboardStats() {
+  const { formatAmount } = useCurrency();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [persons, setPersons] = useState<PersonWithBalance[]>([]);
   const [loading, setLoading] = useState(true);

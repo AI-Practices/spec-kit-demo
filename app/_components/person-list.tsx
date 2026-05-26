@@ -4,11 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createPerson, getPersons, updatePerson, deletePerson } from "@/src/server/actions/persons";
 import type { PersonWithBalance } from "@/src/server/types";
-
-function formatAmount(cents: number): string {
-  const sign = cents < 0 ? "-" : "";
-  return `${sign}$${(Math.abs(cents) / 100).toFixed(2)}`;
-}
+import { useCurrency } from "@/lib/use-currency";
 
 function EmptyPersonState() {
   return (
@@ -25,6 +21,7 @@ function EmptyPersonState() {
 }
 
 export default function PersonList() {
+  const { formatAmount } = useCurrency();
   const [persons, setPersons] = useState<PersonWithBalance[]>([]);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");

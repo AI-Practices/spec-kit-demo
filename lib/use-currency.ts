@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import {
   getCurrencyConfig,
   setCurrencyConfig as persistConfig,
-  DEFAULT_CURRENCY,
 } from "@/lib/currency-config";
 import { formatAmount as formatAmountUtil } from "@/lib/format-amount";
 import type { SupportedCurrency } from "@/lib/format-amount";
@@ -16,11 +15,9 @@ export interface UseCurrencyReturn {
 }
 
 export function useCurrency(): UseCurrencyReturn {
-  const [currencyCode, setCurrencyCode] = useState(DEFAULT_CURRENCY);
+  const [currencyCode, setCurrencyCode] = useState(() => getCurrencyConfig().currencyCode);
 
   useEffect(() => {
-    setCurrencyCode(getCurrencyConfig().currencyCode);
-
     const handler = () => {
       setCurrencyCode(getCurrencyConfig().currencyCode);
     };

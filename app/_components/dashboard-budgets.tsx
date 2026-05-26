@@ -6,12 +6,9 @@ import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-stor
 import type { LegacyBudget, Expense } from "@/src/server/types";
 import Link from "next/link";
 import BudgetProgressBar from "@/app/_components/budget-progress-bar";
+import { useCurrency } from "@/lib/use-currency";
 
 const serverSnapshotBudgets: LegacyBudget[] = [];
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
 
 function getCurrentMonth(): string {
   const now = new Date();
@@ -41,6 +38,7 @@ function computeSummaries(budgets: LegacyBudget[], expenses: Expense[], month: s
 }
 
 export default function DashboardBudgets() {
+  const { formatAmount } = useCurrency();
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
   useEffect(() => {

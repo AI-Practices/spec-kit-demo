@@ -2,12 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { createCredit, getMonthlyCredits } from "@/src/server/actions/wallet";
+import { useCurrency } from "@/lib/use-currency";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
 
 interface MonthlyGridProps {
   personId: string;
@@ -15,6 +12,7 @@ interface MonthlyGridProps {
 }
 
 export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) {
+  const { formatAmount } = useCurrency();
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);

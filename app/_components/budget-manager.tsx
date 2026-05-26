@@ -8,10 +8,7 @@ import { getBudgets, setBudget as saveBudget, removeBudget as removeBudgetFromSt
 import { CATEGORY_LABELS } from "@/src/server/types";
 import type { LegacyBudget, Expense } from "@/src/server/types";
 import MonthPicker from "@/app/_components/month-picker";
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
+import { useCurrency } from "@/lib/use-currency";
 
 const serverSnapshotBudgets: LegacyBudget[] = [];
 
@@ -25,6 +22,7 @@ function toMonthString(year: number, month: number): string {
 }
 
 export default function BudgetManager() {
+  const { formatAmount } = useCurrency();
   const [year, setYear] = useState(() => getCurrentYearMonth().year);
   const [month, setMonth] = useState(() => getCurrentYearMonth().month);
   const [category, setCategory] = useState("");

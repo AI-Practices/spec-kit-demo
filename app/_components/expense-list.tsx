@@ -5,12 +5,10 @@ import { getExpenses } from "@/src/server/actions/get-expenses";
 import { deleteExpense as deleteExpenseAction } from "@/src/server/actions/delete-expense";
 import type { Expense } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
+import { useCurrency } from "@/lib/use-currency";
 
 export default function ExpenseList() {
+  const { formatAmount } = useCurrency();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import ThemeToggle from "@/app/_components/theme-toggle";
+import CurrencySelector from "@/app/_components/currency-selector";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,7 +44,10 @@ export default function RootLayout({
           <Link href="/persons" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
             Persons
           </Link>
-          <ThemeToggle />
+          <div className="ml-auto flex items-center gap-3">
+            <CurrencySelector />
+            <ThemeToggle />
+          </div>
         </nav>
         <main className="flex-1">{children}</main>
       </body>

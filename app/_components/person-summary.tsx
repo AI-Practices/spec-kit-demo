@@ -3,17 +3,14 @@
 import { useState, useEffect } from "react";
 import { getPersonSummary, deleteTransaction } from "@/src/server/actions/wallet";
 import type { PersonSummary as PersonSummaryType } from "@/src/server/types";
-
-function formatAmount(cents: number): string {
-  const sign = cents < 0 ? "-" : "";
-  return `${sign}$${(Math.abs(cents) / 100).toFixed(2)}`;
-}
+import { useCurrency } from "@/lib/use-currency";
 
 interface PersonSummaryViewProps {
   personId: string;
 }
 
 export default function PersonSummaryView({ personId }: PersonSummaryViewProps) {
+  const { formatAmount } = useCurrency();
   const [summary, setSummary] = useState<PersonSummaryType | null>(null);
   const [loading, setLoading] = useState(true);
 

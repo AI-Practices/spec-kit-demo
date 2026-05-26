@@ -58,19 +58,19 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 **Step 3a — CurrencySelector UI + Integration**
 
-- [ ] T007 [P] [US1] Create `CurrencySelector` dropdown component in `app/_components/currency-selector.tsx` with INR/USD options, using `useCurrency` hook
-- [ ] T008 [US1] Integrate `CurrencySelector` into root layout in `app/layout.tsx` (add to nav bar alongside ThemeToggle)
+- [X] T007 [P] [US1] Create `CurrencySelector` dropdown component in `app/_components/currency-selector.tsx` with INR/USD options, using `useCurrency` hook
+- [X] T008 [US1] Integrate `CurrencySelector` into root layout in `app/layout.tsx` (add to nav bar alongside ThemeToggle)
 
 **Step 3b — Replace all duplicated formatAmount with centralized utility**
 
-- [ ] T009 [P] [US1] Replace local `formatAmount` in `app/_components/dashboard-stats.tsx` with centralized `formatAmount` from `lib/format-amount.ts` via `useCurrency` hook
-- [ ] T010 [P] [US1] Replace local `formatAmount` in `app/_components/budget-manager.tsx` with centralized utility
-- [ ] T011 [P] [US1] Replace local `formatAmount` in `app/_components/expense-list.tsx` with centralized utility
-- [ ] T012 [P] [US1] Replace local `formatAmount` in `app/_components/dashboard-budgets.tsx` with centralized utility
-- [ ] T013 [P] [US1] Replace local `formatAmount` in `app/_components/monthly-grid.tsx` with centralized utility
-- [ ] T014 [P] [US1] Replace local `formatAmount` in `app/_components/person-list.tsx` with centralized utility
-- [ ] T015 [P] [US1] Replace local `formatAmount` in `app/_components/person-summary.tsx` with centralized utility
-- [ ] T016 [P] [US1] Replace local `formatAmount` in `app/_components/budget-progress-bar.tsx` with centralized utility
+- [X] T009 [P] [US1] Replace local `formatAmount` in `app/_components/dashboard-stats.tsx` with centralized `formatAmount` from `lib/format-amount.ts` via `useCurrency` hook
+- [X] T010 [P] [US1] Replace local `formatAmount` in `app/_components/budget-manager.tsx` with centralized utility
+- [X] T011 [P] [US1] Replace local `formatAmount` in `app/_components/expense-list.tsx` with centralized utility
+- [X] T012 [P] [US1] Replace local `formatAmount` in `app/_components/dashboard-budgets.tsx` with centralized utility
+- [X] T013 [P] [US1] Replace local `formatAmount` in `app/_components/monthly-grid.tsx` with centralized utility
+- [X] T014 [P] [US1] Replace local `formatAmount` in `app/_components/person-list.tsx` with centralized utility
+- [X] T015 [P] [US1] Replace local `formatAmount` in `app/_components/person-summary.tsx` with centralized utility
+- [X] T016 [P] [US1] Replace local `formatAmount` in `app/_components/budget-progress-bar.tsx` with centralized utility (no-op — component only shows percentages, no amount formatting)
 
 **Checkpoint**: Currency display with INR default + switching works across all pages — MVP is testable independently
 
