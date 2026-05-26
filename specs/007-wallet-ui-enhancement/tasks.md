@@ -84,9 +84,9 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 ### Implementation for User Story 2
 
-- [ ] T017 [P] [US2] Fix amount input in `app/_components/debit-form.tsx` — add `onFocus={(e) => e.target.select()}` to the amount input
-- [ ] T018 [P] [US2] Fix amount input in `app/_components/budget-manager.tsx` — add `onFocus={(e) => e.target.select()}` to the amount input
-- [ ] T019 [P] [US2] Fix amount input in `app/_components/monthly-grid.tsx` — add `onFocus={(e) => e.target.select()}` to the editing amount input
+- [X] T017 [P] [US2] Fix amount input in `app/_components/debit-form.tsx` — add `onFocus={(e) => e.target.select()}` to the amount input
+- [X] T018 [P] [US2] Fix amount input in `app/_components/budget-manager.tsx` — add `onFocus={(e) => e.target.select()}` to the amount input
+- [X] T019 [P] [US2] Fix amount input in `app/_components/monthly-grid.tsx` — add `onFocus={(e) => e.target.select()}` to the editing amount input
 
 **Checkpoint**: All transaction forms now replace on new input — independently testable
 

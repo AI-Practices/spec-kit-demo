@@ -121,6 +121,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
             step="1"
             value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
+            onFocus={(e) => e.target.select()}
             onBlur={() => handleSave(day)}
             onKeyDown={(e) => handleKeyDown(e, day)}
             className="w-full text-xs border border-zinc-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-100"
