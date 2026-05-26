@@ -63,7 +63,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
   function handleCellClick(day: number) {
     const key = dateKey(day);
     setEditing(key);
-    setEditValue(String(entries[key] ?? ""));
+    setEditValue(entries[key] ? String(entries[key] / 100) : "");
   }
 
   async function handleSave(day: number) {
@@ -75,7 +75,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
     }
     const result = await createCredit({
       personId,
-      amount,
+      amount: amount * 100,
       date: key,
     });
     setEditing(null);
@@ -192,7 +192,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
             </span>
           </div>
           <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
-            Click a day cell to enter or edit a credit amount (in cents). Press Enter or click away to save.
+            Click a day cell to enter or edit a credit amount (₹). Press Enter or click away to save.
           </p>
         </>
       )}

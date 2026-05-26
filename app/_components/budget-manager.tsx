@@ -51,7 +51,7 @@ export default function BudgetManager() {
     const rawAmount = formData.get("amount") as string;
     const result = await setBudgetAction({
       category: rawCategory,
-      amount: parseInt(rawAmount, 10),
+      amount: parseInt(rawAmount, 10) * 100,
       month: monthStr,
     });
     if (!result.success) {
@@ -69,7 +69,7 @@ export default function BudgetManager() {
 
   async function handleEditBudget(budget: LegacyBudget) {
     setCategory(budget.category);
-    setAmount(String(budget.amount));
+    setAmount(String(budget.amount / 100));
   }
 
   async function handleRemoveBudget(budgetCategory: string) {
@@ -141,7 +141,7 @@ export default function BudgetManager() {
 
         <div>
           <label htmlFor="amount" className="block text-sm font-medium mb-1 dark:text-zinc-300">
-            Monthly Budget (cents)
+            Monthly Budget (₹)
           </label>
           <input
             id="amount"

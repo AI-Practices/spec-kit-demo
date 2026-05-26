@@ -22,7 +22,7 @@ export default function DebitForm({ personId, personName }: DebitFormProps) {
 
     const result = await createDebit({
       personId,
-      amount: parseInt(amount, 10),
+      amount: parseInt(amount, 10) * 100,
       date,
       notes,
     });
@@ -53,7 +53,7 @@ export default function DebitForm({ personId, personName }: DebitFormProps) {
       <form onSubmit={handleSubmit} className="space-y-4 p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
         <div>
           <label htmlFor="amount" className="block text-sm font-medium mb-1 dark:text-zinc-300">
-            Amount (cents)
+            Amount (₹)
           </label>
           <input
             id="amount"
