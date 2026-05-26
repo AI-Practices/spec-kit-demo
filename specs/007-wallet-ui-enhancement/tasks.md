@@ -168,6 +168,15 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 ---
 
+## Phase 9: Post-Spec Fixes (Discovered During Implementation)
+
+**Purpose**: Resolve UX issues found while implementing Phases 3–8
+
+- [X] T035 Convert all 4 forms to accept whole rupees (×100 on submit to store cents, ÷100 on edit load for prefill) — `add-expense-form.tsx`, `debit-form.tsx`, `budget-manager.tsx`, `monthly-grid.tsx`
+- [X] T036 Create `setDayCredit` server action in `wallet.ts` that atomically deletes existing credits for person+date then creates one new record (wrapped in Prisma `$transaction`); update `monthly-grid.tsx` to call `setDayCredit` instead of `createCredit`
+
+---
+
 ## Dependencies & Execution Order
 
 ### Phase Dependencies
@@ -266,6 +275,6 @@ With multiple developers:
 - Each user story is independently completable and testable
 - No test framework exists — testing is manual per the Independent Test criteria
 - Chart library install is in Phase 1 Setup — don't defer to US3 phase
-- Add `onFocus` select-all only to controlled inputs (debit-form, budget-manager, monthly-grid). Add-expense-form uses uncontrolled input which already replaces correctly.
+- Add `onFocus` select-all only to controlled inputs (debit-form, budget-manager, monthly-grid, add-expense-form). All 4 forms use controlled inputs.
 - Commit after each phase or logical group
 - Stop at any checkpoint to validate story independently

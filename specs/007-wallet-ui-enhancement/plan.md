@@ -28,6 +28,9 @@ Modernize the person-wallet expense tracker with three P1–P3 enhancements: (1)
 
 **Constraints**: No backend currency conversion/rates. No new DB entities. No webpack custom config (Turbopack-only). All amounts stored as integer cents. Dark mode must be preserved and adapted.
 
+- **Amount entry UX**: Users enter whole currency units (rupees); ×100 on submit converts to integer cents, ÷100 on edit load restores display value
+- **setDayCredit**: Monthly grid credit cells replace per-date value atomically — new server action wraps `deleteMany` + `create` in a Prisma `$transaction`
+
 **Scale/Scope**: Single-user frontend app with ~8 pages, ~15 components. 3 P1 user stories, 2 P2, 1 P3.
 
 ## Constitution Check
@@ -85,7 +88,7 @@ app/
 │   ├── empty-state.tsx           # KEEP (used by chart)
 │   ├── expense-list.tsx          # MODIFY: apply new theme
 │   ├── month-picker.tsx          # MODIFY: apply new theme
-│   ├── monthly-grid.tsx          # MODIFY: fix amount input, apply new theme
+│   ├── monthly-grid.tsx          # MODIFY: fix amount input, apply new theme, use setDayCredit
 │   ├── person-list.tsx           # MODIFY: apply new theme
 │   ├── person-nav.tsx            # MODIFY (minor visual update)
 │   ├── person-summary.tsx        # MODIFY: apply new theme
