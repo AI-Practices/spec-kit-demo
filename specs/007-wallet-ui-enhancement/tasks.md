@@ -87,6 +87,7 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 - [X] T017 [P] [US2] Fix amount input in `app/_components/debit-form.tsx` — add `onFocus={(e) => e.target.select()}` to the amount input
 - [X] T018 [P] [US2] Fix amount input in `app/_components/budget-manager.tsx` — add `onFocus={(e) => e.target.select()}` to the amount input
 - [X] T019 [P] [US2] Fix amount input in `app/_components/monthly-grid.tsx` — add `onFocus={(e) => e.target.select()}` to the editing amount input
+(T019 extended: also applied `onFocus` fix to `app/_components/add-expense-form.tsx` to cover all four forms per FR-005)
 
 **Checkpoint**: All transaction forms now replace on new input — independently testable
 
@@ -100,8 +101,8 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 ### Implementation for User Story 3
 
-- [ ] T020 [P] [US3] Create `DonutChart` client component in `app/_components/donut-chart.tsx` using chart.js Doughnut chart with `next/dynamic` + `ssr: false`, using `buildChartDataset` from `lib/chart-data.ts`, with tooltip showing label/amount/percentage and empty state via `EmptyState` component
-- [ ] T021 [US3] Integrate `DonutChart` into `app/_components/dashboard-stats.tsx` — render chart section using expense data from existing `useEffect` fetch, wrapped in responsive card
+- [X] T020 [P] [US3] Create `DonutChart` client component in `app/_components/donut-chart.tsx` using chart.js Doughnut chart with `next/dynamic` + `ssr: false`, using `buildChartDataset` from `lib/chart-data.ts`, with tooltip showing label/amount/percentage and empty state via `EmptyState` component
+- [X] T021 [US3] Integrate `DonutChart` into `app/_components/dashboard-stats.tsx` — render chart section using expense data from existing `useEffect` fetch, wrapped in responsive card
 
 **Checkpoint**: Dashboard analytics with donut chart operational — independently testable without US1/US2
 

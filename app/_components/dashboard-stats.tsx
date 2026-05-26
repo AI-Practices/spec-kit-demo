@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useSyncExternalStore } from "react";
+import dynamic from "next/dynamic";
 import { getExpenses } from "@/src/server/actions/get-expenses";
 import { getPersons } from "@/src/server/actions/persons";
 import { getBudgets, subscribe as subscribeBudgets } from "@/src/lib/budget-storage";
@@ -8,6 +9,19 @@ import type { Expense, PersonWithBalance, LegacyBudget } from "@/src/server/type
 import EmptyState from "@/app/_components/empty-state";
 import DashboardBudgets from "@/app/_components/dashboard-budgets";
 import { useCurrency } from "@/lib/use-currency";
+import { buildChartDataset } from "@/lib/chart-data";
+
+const DonutChart = dynamic(
+  () => import("@/app/_components/donut-chart"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex justify-center py-8">
+        <p className="text-sm text-zinc-400">Loading chart...</p>
+      </div>
+    ),
+  },
+);
 
 const serverSnapshotBudgets: LegacyBudget[] = [];
 
@@ -52,6 +66,8 @@ export default function DashboardStats() {
 
   const total = expenses.reduce((sum, e) => sum + e.amount, 0);
 
+  const chartData = buildChartDataset(expenses);
+
   const sorted = [...expenses].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
@@ -90,6 +106,19 @@ export default function DashboardStats() {
           <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
             <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Total Spending</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{formatAmount(total)}</p>
+          </div>
+
+          <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
+            <p className="text-sm text-zinc-500 mb-3 dark:text-zinc-400">Spending by Category</p>
+            {chartData ? (
+              <div className="max-w-xs mx-auto">
+                <DonutChart data={chartData} formatAmount={formatAmount} />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <p className="text-sm text-zinc-400 dark:text-zinc-500">No category data to display</p>
+              </div>
+            )}
           </div>
 
           <div>

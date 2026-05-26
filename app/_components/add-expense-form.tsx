@@ -51,6 +51,7 @@ export default function AddExpenseForm({
           min="1"
           step="1"
           required
+          onFocus={(e) => e.target.select()}
           className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
         />
         {errors?.amount && (
