@@ -162,9 +162,9 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 **Purpose**: Verify consistency, run lint, final validation
 
-- [ ] T032 Verify all amount displays across every component use the centralized `formatAmount` utility — no remaining `$` hardcoded strings or duplicated formatters
-- [ ] T033 Run `npm run lint` and `npm run build` — fix any TypeScript or ESLint errors
-- [ ] T034 Run quickstart.md validation — verify all manual test scenarios pass
+- [X] T032 Verify all amount displays across every component use the centralized `formatAmount` utility — no remaining `$` hardcoded strings or duplicated formatters
+- [X] T033 Run `npm run lint` and `npm run build` — fix any TypeScript or ESLint errors
+- [X] T034 Run quickstart.md validation — verify all manual test scenarios pass
 
 ---
 
