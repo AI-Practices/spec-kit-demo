@@ -15,6 +15,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   persons             Person[]
+  monthlySummaries    MonthlySummary[]
   walletTransactions  WalletTransaction[]
   expenses            Expense[]
   categories          Category[]
@@ -31,9 +32,32 @@ model Person {
 
   user               User                @relation(fields: [userId], references: [id])
   walletTransactions WalletTransaction[]
+  monthlySummaries   MonthlySummary[]
 
   @@index([userId, deletedAt])
   @@index([userId, name])
+}
+
+model MonthlySummary {
+  id                  String   @id @default(cuid())
+  userId              String
+  personId            String
+  month               Int
+  year                Int
+  monthlySavings      Int
+  lastMonthRemaining  Int
+  giveBackForExpenses Int
+  loanAmount          Int
+  balanceForNextMonth Int
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  person Person @relation(fields: [personId], references: [id])
+
+  @@unique([personId, month, year])
+  @@index([personId, year])
+  @@index([userId, personId])
 }
 
 model WalletTransaction {
