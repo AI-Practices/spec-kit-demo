@@ -30,8 +30,8 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 **Purpose**: Project initialization and dependency installation
 
-- [ ] T001 Install chart.js and react-chartjs-2 dependencies via `npm install chart.js react-chartjs-2`
-- [ ] T002 [P] Create `lib/` directory with module structure for new shared utilities
+- [X] T001 Install chart.js and react-chartjs-2 dependencies via `npm install chart.js react-chartjs-2`
+- [X] T002 [P] Create `lib/` directory with module structure for new shared utilities
 
 ---
 
