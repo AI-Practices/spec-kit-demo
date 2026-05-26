@@ -5,12 +5,10 @@ import { getExpenses } from "@/src/server/actions/get-expenses";
 import { deleteExpense as deleteExpenseAction } from "@/src/server/actions/delete-expense";
 import type { Expense } from "@/src/server/types";
 import EmptyState from "@/app/_components/empty-state";
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
+import { useCurrency } from "@/lib/use-currency";
 
 export default function ExpenseList() {
+  const { formatAmount } = useCurrency();
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +54,7 @@ export default function ExpenseList() {
       {expenses.map((expense) => (
         <div
           key={expense.id}
-          className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
+          className="flex items-center justify-between p-3 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700"
         >
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium text-zinc-900 min-w-[72px] dark:text-zinc-100">
@@ -65,7 +63,7 @@ export default function ExpenseList() {
             <span className="text-sm text-zinc-500 min-w-[88px] dark:text-zinc-400">
               {expense.date}
             </span>
-            <span className="inline-block px-2 py-0.5 text-xs font-medium bg-zinc-100 text-zinc-700 rounded dark:bg-zinc-700 dark:text-zinc-300">
+            <span className="inline-block px-2 py-0.5 text-xs font-medium bg-chart-cyan/10 text-chart-cyan rounded">
               {expense.category}
             </span>
             <span className="text-sm text-zinc-600 truncate max-w-[240px] dark:text-zinc-400">

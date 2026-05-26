@@ -3,18 +3,23 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
+  --background: #F8FAFC;
   --foreground: #171717;
-  --surface: #f9fafb;
-  --border: #e5e7eb;
-  --text-secondary: #6b7280;
+  --surface: #ffffff;
+  --border: #e2e8f0;
+  --text-secondary: #64748b;
   --input-bg: #ffffff;
-  --input-border: #d1d5db;
+  --input-border: #cbd5e1;
   --error-bg: #fef2f2;
   --error-text: #dc2626;
   --budget-safe: #22c55e;
   --budget-warning: #f59e0b;
   --budget-overspent: #ef4444;
+  --color-accent: #4F46E5;
+  --color-accent-hover: #4338CA;
+  --color-positive: #22C55E;
+  --color-negative: #EF4444;
+  --color-chart-cyan: #06B6D4;
 }
 
 .dark {
@@ -30,11 +35,27 @@
   --budget-safe: #4ade80;
   --budget-warning: #fbbf24;
   --budget-overspent: #f87171;
+  --color-accent: #818CF8;
+  --color-accent-hover: #A5B4FC;
+  --color-positive: #4ade80;
+  --color-negative: #f87171;
+  --color-chart-cyan: #22d3ee;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-positive: var(--color-positive);
+  --color-negative: var(--color-negative);
+  --color-chart-cyan: var(--color-chart-cyan);
+  --color-budget-safe: var(--budget-safe);
+  --color-budget-warning: var(--budget-warning);
+  --color-budget-overspent: var(--budget-overspent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

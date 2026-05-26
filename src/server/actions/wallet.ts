@@ -36,6 +36,55 @@ function serializeTx(tx: {
   };
 }
 
+export async function setDayCredit(
+  input: unknown
+): Promise<ActionResult<WalletTransaction>> {
+  const parsed = createCreditSchema.safeParse(input);
+  if (!parsed.success) {
+    return {
+      success: false,
+      errors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
+  }
+  try {
+    const userId = await ensureUser();
+    const person = await prisma.person.findUnique({
+      where: { id: parsed.data.personId, userId },
+    });
+    if (!person) {
+      return { success: false, errors: { _form: ["Person not found"] } };
+    }
+    const [, tx] = await prisma.$transaction([
+      prisma.walletTransaction.deleteMany({
+        where: {
+          personId: parsed.data.personId,
+          userId,
+          type: "credit",
+          date: new Date(parsed.data.date),
+        },
+      }),
+      prisma.walletTransaction.create({
+        data: {
+          userId,
+          personId: parsed.data.personId,
+          type: "credit",
+          amount: parsed.data.amount,
+          date: new Date(parsed.data.date),
+          notes: parsed.data.notes ?? null,
+        },
+      }),
+    ]);
+    revalidatePath(`/persons/${parsed.data.personId}`);
+    revalidatePath("/persons");
+    return { success: true, data: serializeTx(tx) };
+  } catch (err) {
+    return {
+      success: false,
+      errors: { _form: [err instanceof Error ? err.message : "Failed to set day credit"] },
+    };
+  }
+}
+
 export async function createCredit(
   input: unknown
 ): Promise<ActionResult<WalletTransaction>> {

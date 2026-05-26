@@ -10,25 +10,31 @@ export default function AddExpenseForm({
 }: {
   onExpenseAdded?: () => void;
 }) {
+  const [amount, setAmount] = useState("");
+  const [date, setDate] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   async function handleSubmit(formData: FormData) {
     setErrors(null);
 
-    const amount = parseInt(formData.get("amount") as string, 10);
-    const date = formData.get("date") as string;
-    const category = formData.get("category") as Category;
-    const description = formData.get("description") as string;
-
-    const result = await addExpenseAction({ amount, date, category, description });
+    const result = await addExpenseAction({
+      amount: parseInt(formData.get("amount") as string, 10) * 100,
+      date: formData.get("date") as string,
+      category: formData.get("category") as Category,
+      description: formData.get("description") as string,
+    });
 
     if (!result.success) {
       setErrors(result.errors);
       return;
     }
 
-    const form = document.getElementById("add-expense-form") as HTMLFormElement;
-    form?.reset();
+    setAmount("");
+    setDate("");
+    setCategory("");
+    setDescription("");
     onExpenseAdded?.();
   }
 
@@ -38,11 +44,11 @@ export default function AddExpenseForm({
     <form
       id="add-expense-form"
       action={handleSubmit}
-      className="space-y-4 mb-8 p-4 border border-zinc-200 rounded-lg dark:border-zinc-700"
+      className="space-y-4 mb-8 p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700"
     >
       <div>
         <label htmlFor="amount" className="block text-sm font-medium mb-1 dark:text-zinc-300">
-          Amount (cents)
+          Amount (₹)
         </label>
         <input
           id="amount"
@@ -51,10 +57,13 @@ export default function AddExpenseForm({
           min="1"
           step="1"
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          onFocus={(e) => e.target.select()}
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
         />
         {errors?.amount && (
-          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.amount[0]}</p>
+          <p className="text-sm text-negative mt-1 dark:text-negative">{errors.amount[0]}</p>
         )}
       </div>
 
@@ -68,10 +77,12 @@ export default function AddExpenseForm({
           type="date"
           max={today}
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
         />
         {errors?.date && (
-          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.date[0]}</p>
+          <p className="text-sm text-negative mt-1 dark:text-negative">{errors.date[0]}</p>
         )}
       </div>
 
@@ -82,8 +93,10 @@ export default function AddExpenseForm({
         <select
           id="category"
           name="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           required
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
         >
           <option value="">Select a category</option>
           {CATEGORY_LABELS.map((cat) => (
@@ -93,7 +106,7 @@ export default function AddExpenseForm({
           ))}
         </select>
         {errors?.category && (
-          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.category[0]}</p>
+          <p className="text-sm text-negative mt-1 dark:text-negative">{errors.category[0]}</p>
         )}
       </div>
 
@@ -106,16 +119,18 @@ export default function AddExpenseForm({
           name="description"
           required
           rows={3}
-          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
         />
         {errors?.description && (
-          <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.description[0]}</p>
+          <p className="text-sm text-negative mt-1 dark:text-negative">{errors.description[0]}</p>
         )}
       </div>
 
       <button
         type="submit"
-        className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-500"
+        className="px-4 py-2 bg-accent text-white text-sm font-medium rounded transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent dark:bg-accent dark:text-white dark:hover:bg-accent-hover"
       >
         Add Expense
       </button>

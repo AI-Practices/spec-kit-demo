@@ -1,13 +1,10 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { createCredit, getMonthlyCredits } from "@/src/server/actions/wallet";
+import { setDayCredit, getMonthlyCredits } from "@/src/server/actions/wallet";
+import { useCurrency } from "@/lib/use-currency";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-function formatAmount(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
-}
 
 interface MonthlyGridProps {
   personId: string;
@@ -15,6 +12,7 @@ interface MonthlyGridProps {
 }
 
 export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) {
+  const { formatAmount } = useCurrency();
   const today = new Date();
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth() + 1);
@@ -65,7 +63,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
   function handleCellClick(day: number) {
     const key = dateKey(day);
     setEditing(key);
-    setEditValue(String(entries[key] ?? ""));
+    setEditValue("");
   }
 
   async function handleSave(day: number) {
@@ -75,9 +73,9 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
       setEditing(null);
       return;
     }
-    const result = await createCredit({
+    const result = await setDayCredit({
       personId,
-      amount,
+      amount: amount * 100,
       date: key,
     });
     setEditing(null);
@@ -112,7 +110,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
     cells.push(
       <div
         key={key}
-        className="p-2 border border-zinc-200 dark:border-zinc-700 rounded min-h-[60px] cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+        className="p-2 border border-border rounded min-h-[60px] cursor-pointer hover:bg-accent/5 transition-colors"
         onClick={() => !isEditing && handleCellClick(day)}
       >
         <div className="text-xs text-zinc-400 dark:text-zinc-500 mb-1">{day}</div>
@@ -123,14 +121,15 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
             step="1"
             value={editValue}
             onChange={(e) => setEditValue(e.target.value)}
+            onFocus={(e) => e.target.select()}
             onBlur={() => handleSave(day)}
             onKeyDown={(e) => handleKeyDown(e, day)}
-            className="w-full text-xs border border-zinc-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-100"
+            className="w-full text-xs border border-zinc-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-accent dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-100"
             autoFocus
             onClick={(e) => e.stopPropagation()}
           />
         ) : (
-          <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+          <div className="text-sm font-medium text-positive">
             {amount ? formatAmount(amount) : ""}
           </div>
         )}
@@ -149,7 +148,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={prevMonth}
-          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-zinc-300"
+          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-accent/5 focus:outline-none focus:ring-2 focus:ring-accent dark:border-zinc-600 dark:text-zinc-300"
         >
           &larr; Prev
         </button>
@@ -161,7 +160,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
         </span>
         <button
           onClick={nextMonth}
-          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-zinc-300"
+          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-accent/5 focus:outline-none focus:ring-2 focus:ring-accent dark:border-zinc-600 dark:text-zinc-300"
         >
           Next &rarr;
         </button>
@@ -193,7 +192,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
             </span>
           </div>
           <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
-            Click a day cell to enter or edit a credit amount (in cents). Press Enter or click away to save.
+            Click a day cell to enter or edit a credit amount (₹). Press Enter or click away to save.
           </p>
         </>
       )}

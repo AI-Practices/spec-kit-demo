@@ -18,7 +18,7 @@ export default async function PersonDetailPage({
   const person = result.data;
 
   return (
-    <div>
+    <div className="mx-auto max-w-2xl px-4 py-8">
       <PersonNav personId={person.id} personName={person.name} activeTab="credits" />
       <MonthlyGrid personId={person.id} personName={person.name} />
     </div>

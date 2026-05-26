@@ -18,7 +18,7 @@ export default async function SummaryPage({
   const person = result.data;
 
   return (
-    <div>
+    <div className="mx-auto max-w-2xl px-4 py-8">
       <PersonNav personId={person.id} personName={person.name} activeTab="summary" />
       <PersonSummaryView personId={person.id} />
     </div>
