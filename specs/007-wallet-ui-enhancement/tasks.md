@@ -39,10 +39,10 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 **Purpose**: Core utility modules that ALL user stories depend on — must be complete before any story can begin
 
-- [ ] T003 [P] Create centralized `formatAmount` utility in `lib/format-amount.ts` using `Intl.NumberFormat` with locale-per-currency (en-IN for INR lakh/crore, en-US for USD thousand/million)
-- [ ] T004 [P] Create `getCurrencyConfig` / `setCurrencyConfig` persistence module in `lib/currency-config.ts` (localStorage key `"currency-preference"`, default INR)
-- [ ] T005 [P] Create `useCurrency` React hook in `lib/use-currency.ts` wrapping currency config + formatAmount with cross-component reactivity via custom event broadcasting
-- [ ] T006 [P] Create `buildChartDataset` data transform in `lib/chart-data.ts` — groups expenses by category, computes percentages, aggregates categories <5% into "Others" segment
+- [X] T003 [P] Create centralized `formatAmount` utility in `lib/format-amount.ts` using `Intl.NumberFormat` with locale-per-currency (en-IN for INR lakh/crore, en-US for USD thousand/million)
+- [X] T004 [P] Create `getCurrencyConfig` / `setCurrencyConfig` persistence module in `lib/currency-config.ts` (localStorage key `"currency-preference"`, default INR)
+- [X] T005 [P] Create `useCurrency` React hook in `lib/use-currency.ts` wrapping currency config + formatAmount with cross-component reactivity via custom event broadcasting
+- [X] T006 [P] Create `buildChartDataset` data transform in `lib/chart-data.ts` — groups expenses by category, computes percentages, aggregates categories <5% into "Others" segment
 
 **Checkpoint**: Foundation ready — user story implementation can now begin in parallel
 
