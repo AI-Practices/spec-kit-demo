@@ -1,15 +1,16 @@
-export interface FlatLedger {
+export interface MonthlyLedger {
   sheetName: string;
   month: number;
   year: number;
-  entries: FlatLedgerEntry[];
+  rows: LedgerRow[];
 }
 
-export interface FlatLedgerEntry {
+export interface LedgerRow {
+  description: string;
   type: "credit" | "debit";
-  amount: number;
+  dailyValues: (number | null)[];
   rawFormula: string | null;
-  cellRef: string;
+  rowIndex: number;
 }
 
 export interface ParsedTransaction {
@@ -114,7 +115,7 @@ export function createTemplate(month: number, year: number): Buffer {
   const ws = XLSX.utils.aoa_to_sheet(rows);
 
   const debitCellRef = XLSX.utils.encode_cell({ r: rows.length - 1, c: 1 });
-  ws[debitCellRef] = { t: "s", v: "=SUM(-5000-3000)" };
+  ws[debitCellRef] = { t: "s", v: "=SUM(-500-300)" };
 
   ws["!cols"] = [{ wch: 20 }, { wch: 16 }];
 
@@ -122,4 +123,101 @@ export function createTemplate(month: number, year: number): Buffer {
   XLSX.utils.book_append_sheet(wb, ws, sheetName);
 
   return XLSX.write(wb, { type: "buffer", bookType: "xlsx" }) as Buffer;
+}
+
+export function parseWorkbook(fileBuffer: Buffer, sheetName?: string): MonthlyLedger {
+  const wb = XLSX.read(fileBuffer, { type: "buffer" });
+  const targetSheet = sheetName ?? wb.SheetNames[0];
+  if (!wb.SheetNames.includes(targetSheet)) {
+    throw new Error(`Sheet "${targetSheet}" not found. Available sheets: ${wb.SheetNames.join(", ")}`);
+  }
+  const sheet = wb.Sheets[targetSheet];
+  const parsed = parseSheetName(targetSheet);
+  if (!parsed) throw new Error(`Sheet name "${targetSheet}" does not match Month-Year format`);
+
+  const rows: LedgerRow[] = [];
+  const range = sheet["!ref"];
+  if (!range) {
+    return { sheetName: targetSheet, month: parsed.month, year: parsed.year, rows: [] };
+  }
+  const ref = XLSX.utils.decode_range(range);
+
+  for (let r = ref.s.r + 1; r <= ref.e.r; r++) {
+    const cellA = sheet[XLSX.utils.encode_cell({ r, c: 0 })];
+    const cellB = sheet[XLSX.utils.encode_cell({ r, c: 1 })];
+    const desc = cellA?.v?.toString()?.trim() ?? "";
+    const rawVal = cellB?.v;
+
+    if (!desc && (rawVal === undefined || rawVal === null || rawVal === "")) continue;
+
+    const dayMatch = desc.match(/^(\d{1,2})(st|nd|rd|th)$/);
+    const formula = rawVal?.toString()?.trim() ?? "";
+
+    if (typeof rawVal === "number" && rawVal > 0) {
+      const daily = new Array(31).fill(null) as (number | null)[];
+      if (dayMatch) {
+        const day = parseInt(dayMatch[1], 10);
+        if (day >= 1 && day <= 31) daily[day - 1] = rawVal;
+      }
+      rows.push({
+        description: desc,
+        type: "credit",
+        dailyValues: daily,
+        rawFormula: null,
+        rowIndex: r,
+      });
+    } else if (formula.startsWith("=SUM")) {
+      rows.push({
+        description: desc,
+        type: "debit",
+        dailyValues: [],
+        rawFormula: formula,
+        rowIndex: r,
+      });
+    }
+  }
+
+  return { sheetName: targetSheet, month: parsed.month, year: parsed.year, rows };
+}
+
+export function ledgerToTransactions(
+  ledger: MonthlyLedger,
+  personId: string,
+): ParsedTransaction[] {
+  void personId;
+  const transactions: ParsedTransaction[] = [];
+  const monthStr = String(ledger.month).padStart(2, "0");
+  const lastDay = new Date(ledger.year, ledger.month, 0).getDate();
+
+  for (const row of ledger.rows) {
+    if (row.type === "credit") {
+      for (let day = 0; day < 31; day++) {
+        const amount = row.dailyValues[day];
+        if (amount !== null && amount > 0) {
+          const dayStr = String(day + 1).padStart(2, "0");
+          transactions.push({
+            type: "credit",
+            amount: Math.round(amount),
+            date: `${ledger.year}-${monthStr}-${dayStr}`,
+            notes: row.description || null,
+            cellRef: `${ledger.sheetName}!${XLSX.utils.encode_cell({ r: row.rowIndex, c: day + 1 })}`,
+          });
+        }
+      }
+    } else if (row.type === "debit") {
+      const amounts = parseDebitFormula(row.rawFormula || "");
+      const debitDate = `${ledger.year}-${monthStr}-${String(lastDay).padStart(2, "0")}`;
+      for (const amount of amounts) {
+        transactions.push({
+          type: "debit",
+          amount: Math.round(amount),
+          date: debitDate,
+          notes: row.description || null,
+          cellRef: `${ledger.sheetName}!${XLSX.utils.encode_cell({ r: row.rowIndex, c: 0 })}`,
+        });
+      }
+    }
+  }
+
+  return transactions;
 }

@@ -122,6 +122,16 @@ Key steps for implementation (detailed in `quickstart.md`):
 4. Implement UI components (upload, preview modal, export button, template download)
 5. Wire into existing person pages
 
+## Post-Implementation Decisions
+
+| Decision | Rationale | Files Affected |
+|----------|-----------|----------------|
+| **Amounts stored as rupees (not cents/paise)** | INR has no meaningful sub-unit in practice. Cents convention removed entirely. | `lib/format-amount.ts`, `lib/use-currency.ts`, `src/server/schemas/wallet.ts` |
+| **Manual forms no longer multiply by 100** | Old `* 100` converted rupees → cents; no longer needed. | `app/_components/monthly-grid.tsx`, `app/_components/debit-form.tsx` |
+| **Zero allowed as credit amount** | Enables clearing a day's credit entry. | `app/_components/monthly-grid.tsx`, `src/server/schemas/wallet.ts` |
+| **Template debit example updated** | Changed from `=SUM(-5000-3000)` (cents) to `=SUM(-500-300)` (rupees). | `lib/excel-utils.ts` |
+| **Old data accepted as-is** | Existing manual entries stored as cents will display 100× larger (e.g., 5000 → ₹5,000). No migration. | n/a |
+
 ## Complexity Tracking
 
 No Constitution violations identified. Complexity is justified by feature requirements — no tracking needed.

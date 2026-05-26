@@ -7,9 +7,10 @@ import { useCurrency } from "@/lib/use-currency";
 
 interface PersonSummaryViewProps {
   personId: string;
+  refreshKey?: number;
 }
 
-export default function PersonSummaryView({ personId }: PersonSummaryViewProps) {
+export default function PersonSummaryView({ personId, refreshKey = 0 }: PersonSummaryViewProps) {
   const { formatAmount } = useCurrency();
   const [summary, setSummary] = useState<PersonSummaryType | null>(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +20,7 @@ export default function PersonSummaryView({ personId }: PersonSummaryViewProps) 
       if (result.success) setSummary(result.data);
       setLoading(false);
     });
-  }, [personId]);
+  }, [personId, refreshKey]);
 
   async function handleDelete(txId: string) {
     const result = await deleteTransaction({ id: txId });

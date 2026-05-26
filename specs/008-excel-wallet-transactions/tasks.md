@@ -63,10 +63,10 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 ### Implementation for User Story 1
 
-- [ ] T007 [P] [US1] Implement `createTemplate(month: number, year: number): Buffer` in `lib/excel-utils.ts` — generates workbook with sheet named per `buildMonthSheetName`, headers in row 1, one example credit row and one example debit formula row
-- [ ] T008 [US1] Implement `download-template.ts` server action at `src/server/actions/download-template.ts` — accepts optional month/year, defaults to current month, returns Excel file as `Blob`
-- [ ] T009 [US1] Implement `template-download.tsx` component at `app/_components/template-download.tsx` — `'use client'` button that calls downloadTemplate and triggers file download
-- [ ] T010 [US1] Wire Template Download button into person pages — add `<TemplateDownload />` to `app/persons/page.tsx` and `app/persons/[id]/summary/page.tsx`
+- [x] T007 [P] [US1] Implement `createTemplate(month: number, year: number): Buffer` in `lib/excel-utils.ts` — generates workbook with sheet named per `buildMonthSheetName`, headers in row 1, one example credit row and one example debit formula row
+- [x] T008 [US1] Implement `download-template.ts` server action at `src/server/actions/download-template.ts` — accepts optional month/year, defaults to current month, returns Excel file as `Blob`
+- [x] T009 [US1] Implement `template-download.tsx` component at `app/_components/template-download.tsx` — `'use client'` button that calls downloadTemplate and triggers file download
+- [x] T010 [US1] Wire Template Download button into person pages — add `<TemplateDownload />` to `app/persons/page.tsx` and `app/persons/[id]/summary/page.tsx`
 
 **Checkpoint**: Template downloads correctly, opens in Excel/Sheets, matches the required ledger format
 
@@ -80,13 +80,13 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 ### Implementation for User Story 2
 
-- [ ] T011 [P] [US2] Implement `parseWorkbook(fileBuffer: Buffer): MonthlyLedger` in `lib/excel-utils.ts` — reads `.xlsx` buffer, iterates rows, classifies as credit (daily values) or debit (`=SUM` formula), returns `MonthlyLedger` with validated `LedgerRow[]`
-- [ ] T012 [P] [US2] Implement `ledgerToTransactions(ledger: MonthlyLedger, personId: string): ParsedTransaction[]` in `lib/excel-utils.ts` — converts credit row cells (one per non-empty day cell) and debit formula amounts (one per parsed value) into `ParsedTransaction` array with dates, amounts (converted to cents), descriptions
-- [ ] T013 [US2] Implement `import-transactions.ts` server action at `src/server/actions/import-transactions.ts` — two-phase: first call parses/validates and returns preview; second call (with `confirmed=true`) executes `prisma.$transaction([deleteMany for person+month, createMany for new transactions])`
-- [ ] T014 [US2] Implement `import-transactions.tsx` component at `app/_components/import-transactions.tsx` — `'use client'` with file upload area (drag-and-drop + click, `.xlsx`/`.xls` only), preview modal showing parsed transactions grouped by type with amounts/dates/descriptions, confirm and cancel buttons, loading states
-- [ ] T015 [US2] Add sheet selector dropdown to `import-transactions.tsx` — when parsed workbook has multiple sheets, show dropdown listing all month-named sheets for user selection before preview
-- [ ] T016 [US2] Wire Import button into person summary page — add `<ImportTransactions personId={person.id} onImportComplete={refresh} />` to `app/persons/[id]/summary/page.tsx`
-- [ ] T017 [US2] Implement refresh on import success — call `revalidatePath()` in the import server action for `/persons/[id]`, `/persons/[id]/summary`, and `/` routes; trigger parent component re-fetch via `onImportComplete` callback
+- [x] T011 [P] [US2] Implement `parseWorkbook(fileBuffer: Buffer): MonthlyLedger` in `lib/excel-utils.ts` — reads `.xlsx` buffer, iterates rows, classifies as credit (daily values) or debit (`=SUM` formula), returns `MonthlyLedger` with validated `LedgerRow[]`
+- [x] T012 [P] [US2] Implement `ledgerToTransactions(ledger: MonthlyLedger, personId: string): ParsedTransaction[]` in `lib/excel-utils.ts` — converts credit row cells (one per non-empty day cell) and debit formula amounts (one per parsed value) into `ParsedTransaction` array with dates, amounts (converted to cents), descriptions
+- [x] T013 [US2] Implement `import-transactions.ts` server action at `src/server/actions/import-transactions.ts` — two-phase: first call parses/validates and returns preview; second call (with `confirmed=true`) executes `prisma.$transaction([deleteMany for person+month, createMany for new transactions])`
+- [x] T014 [US2] Implement `import-transactions.tsx` component at `app/_components/import-transactions.tsx` — `'use client'` with file upload area (drag-and-drop + click, `.xlsx`/`.xls` only), preview modal showing parsed transactions grouped by type with amounts/dates/descriptions, confirm and cancel buttons, loading states
+- [x] T015 [US2] Add sheet selector dropdown to `import-transactions.tsx` — when parsed workbook has multiple sheets, show dropdown listing all month-named sheets for user selection before preview
+- [x] T016 [US2] Wire Import button into person summary page — add `<ImportTransactions personId={person.id} onImportComplete={refresh} />` to `app/persons/[id]/summary/page.tsx`
+- [x] T017 [US2] Implement refresh on import success — call `revalidatePath()` in the import server action for `/persons/[id]`, `/persons/[id]/summary`, and `/` routes; trigger parent component re-fetch via `onImportComplete` callback
 
 **Checkpoint**: Full import flow works end-to-end — upload, parse, preview, confirm, data stored, UI refreshes
 
@@ -134,13 +134,27 @@ description: "Task list for Excel Wallet Transactions feature implementation"
 
 **Purpose**: Integration verification, edge case hardening, and final validation
 
-- [ ] T030 Install `@types/xlsx` if needed and verify no type errors with `npm run lint`
-- [ ] T031 Verify all three new components are wired into pages and accessible from the person navigation flow
-- [ ] T032 Verify currency handling: amounts display in user's preferred currency in preview modal and template Total header
-- [ ] T033 Verify re-import behavior: uploading a second file for the same person+month replaces data (no duplicates)
-- [ ] T034 Run `npm run lint` and fix any lint errors across all new files
-- [ ] T035 Run `npm run build` and verify no build errors
-- [ ] T036 Review all new files for clean code, explicit TypeScript types, and consistent naming
+- [x] T030 Install `@types/xlsx` if needed and verify no type errors with `npm run lint`
+- [x] T031 Verify all three new components are wired into pages and accessible from the person navigation flow
+- [x] T032 Verify currency handling: amounts display in user's preferred currency in preview modal and template Total header
+- [x] T033 Verify re-import behavior: uploading a second file for the same person+month replaces data (no duplicates)
+- [x] T034 Run `npm run lint` and fix any lint errors across all new files
+- [x] T035 Run `npm run build` and verify no build errors
+- [x] T036 Review all new files for clean code, explicit TypeScript types, and consistent naming
+
+## Phase 8: Cents-to-Rupees Conversion
+
+**Purpose**: Remove cents/paise convention — amounts stored and displayed as whole rupees
+
+- [x] T037 Remove `cents / 100` division from `lib/format-amount.ts` — amounts treated as rupees
+- [x] T038 Rename `cents` parameter to `amount` in `lib/use-currency.ts` to match
+- [x] T039 Remove `(cents)` from validation messages in `src/server/schemas/wallet.ts`
+- [x] T040 Remove `* 100` multiplier from `app/_components/monthly-grid.tsx` credit entry
+- [x] T041 Remove `* 100` multiplier from `app/_components/debit-form.tsx` debit entry
+- [x] T042 Update template example formula `=SUM(-5000-3000)` → `=SUM(-500-300)` in `lib/excel-utils.ts`
+- [x] T043 Allow zero as credit amount — change `<= 0` → `< 0` guard and `.positive()` → `.nonnegative()` in schema
+- [x] T044 Fix grid display for zero amounts — use `!== undefined` check instead of falsy check
+- [x] T045 Run `npm run lint` and `npm run build` — clean
 
 ---
 

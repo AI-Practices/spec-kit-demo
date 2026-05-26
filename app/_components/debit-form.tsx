@@ -22,7 +22,7 @@ export default function DebitForm({ personId, personName }: DebitFormProps) {
 
     const result = await createDebit({
       personId,
-      amount: parseInt(amount, 10) * 100,
+      amount: parseInt(amount, 10),
       date,
       notes,
     });

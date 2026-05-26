@@ -69,13 +69,13 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
   async function handleSave(day: number) {
     const key = dateKey(day);
     const amount = parseInt(editValue, 10);
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(amount) || amount < 0) {
       setEditing(null);
       return;
     }
     const result = await setDayCredit({
       personId,
-      amount: amount * 100,
+      amount,
       date: key,
     });
     setEditing(null);
@@ -130,7 +130,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
           />
         ) : (
           <div className="text-sm font-medium text-positive">
-            {amount ? formatAmount(amount) : ""}
+            {amount !== undefined && amount !== null ? formatAmount(amount) : ""}
           </div>
         )}
       </div>

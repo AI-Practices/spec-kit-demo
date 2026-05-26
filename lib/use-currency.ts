@@ -11,7 +11,7 @@ import type { SupportedCurrency } from "@/lib/format-amount";
 export interface UseCurrencyReturn {
   currencyCode: string;
   setCurrency: (code: string) => void;
-  formatAmount: (cents: number) => string;
+  formatAmount: (amount: number) => string;
 }
 
 export function useCurrency(): UseCurrencyReturn {
@@ -30,7 +30,7 @@ export function useCurrency(): UseCurrencyReturn {
   }, []);
 
   const formatAmount = useCallback(
-    (cents: number) => formatAmountUtil(cents, currencyCode as SupportedCurrency),
+    (amount: number) => formatAmountUtil(amount, currencyCode as SupportedCurrency),
     [currencyCode],
   );
 

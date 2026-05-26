@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getPerson } from "@/src/server/actions/persons";
-import PersonSummaryView from "@/app/_components/person-summary";
 import PersonNav from "@/app/_components/person-nav";
+import SummaryClient from "./summary-client";
 
 export default async function SummaryPage({
   params,
@@ -20,7 +20,7 @@ export default async function SummaryPage({
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
       <PersonNav personId={person.id} personName={person.name} activeTab="summary" />
-      <PersonSummaryView personId={person.id} />
+      <SummaryClient personId={person.id} />
     </div>
   );
 }
