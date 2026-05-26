@@ -63,7 +63,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
   function handleCellClick(day: number) {
     const key = dateKey(day);
     setEditing(key);
-    setEditValue(entries[key] ? String(entries[key] / 100) : "");
+    setEditValue("");
   }
 
   async function handleSave(day: number) {
