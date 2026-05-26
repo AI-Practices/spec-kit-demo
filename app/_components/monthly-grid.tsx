@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { createCredit, getMonthlyCredits } from "@/src/server/actions/wallet";
+import { setDayCredit, getMonthlyCredits } from "@/src/server/actions/wallet";
 import { useCurrency } from "@/lib/use-currency";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -73,7 +73,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
       setEditing(null);
       return;
     }
-    const result = await createCredit({
+    const result = await setDayCredit({
       personId,
       amount: amount * 100,
       date: key,
