@@ -6,15 +6,14 @@ const CURRENCY_LOCALE_MAP: Record<SupportedCurrency, string> = {
 };
 
 export function formatAmount(
-  cents: number,
+  amount: number,
   currencyCode: SupportedCurrency = "INR",
 ): string {
-  const amount = cents / 100;
   const locale = CURRENCY_LOCALE_MAP[currencyCode] ?? "en-US";
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: currencyCode,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount);
 }

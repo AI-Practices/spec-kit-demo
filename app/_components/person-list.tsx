@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createPerson, getPersons, updatePerson, deletePerson } from "@/src/server/actions/persons";
 import type { PersonWithBalance } from "@/src/server/types";
 import { useCurrency } from "@/lib/use-currency";
+import TemplateDownload from "./template-download";
 
 function EmptyPersonState() {
   return (
@@ -109,6 +110,7 @@ export default function PersonList() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Persons</h1>
+        <TemplateDownload />
       </div>
 
       <form onSubmit={handleSubmit} className="flex items-end gap-3 mb-8">

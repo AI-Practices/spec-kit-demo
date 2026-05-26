@@ -262,8 +262,8 @@ export async function getMonthlyCredits(
   try {
     const userId = await ensureUser();
     const { personId, year, month } = parsed.data;
-    const start = new Date(year, month - 1, 1);
-    const end = new Date(year, month, 0, 23, 59, 59, 999);
+    const start = new Date(Date.UTC(year, month - 1, 1));
+    const end = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
     const transactions = await prisma.walletTransaction.findMany({
       where: {
         personId,
