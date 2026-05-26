@@ -118,25 +118,25 @@ description: "Task list for Currency Support, Analytics Charts & UI Redesign"
 
 **Step 6a — Design tokens**
 
-- [ ] T022 [US4] Update `app/globals.css` with new color tokens — add `--color-accent` (indigo), `--color-positive` (green), `--color-negative` (red), `--color-chart-cyan`, `--color-accent-hover` to `:root` and `.dark`; change `--background` to `#F8FAFC` in light mode; add tokens to `@theme inline` block for Tailwind utility usage
+- [X] T022 [US4] Update `app/globals.css` with new color tokens — add `--color-accent` (indigo), `--color-positive` (green), `--color-negative` (red), `--color-chart-cyan`, `--color-accent-hover` to `:root` and `.dark`; change `--background` to `#F8FAFC` in light mode; add tokens to `@theme inline` block for Tailwind utility usage
 
 **Step 6b — Apply theme to dashboard components**
 
-- [ ] T023 [P] [US4] Apply new theme to `app/_components/dashboard-stats.tsx` — update card styles (shadow, border-radius, padding), apply accent button/indicator colors, use semantic positive/negative colors
-- [ ] T024 [P] [US4] Apply new theme to `app/_components/dashboard-budgets.tsx` and `app/_components/budget-progress-bar.tsx` — update card/bar styling with new tokens
+- [X] T023 [P] [US4] Apply new theme to `app/_components/dashboard-stats.tsx` — update card styles (shadow, border-radius, padding), apply accent button/indicator colors, use semantic positive/negative colors
+- [X] T024 [P] [US4] Apply new theme to `app/_components/dashboard-budgets.tsx` and `app/_components/budget-progress-bar.tsx` — update card/bar styling with new tokens
 
 **Step 6c — Apply theme to form components**
 
-- [ ] T025 [P] [US4] Apply new theme to form components (`app/_components/add-expense-form.tsx`, `app/_components/debit-form.tsx`, `app/_components/budget-manager.tsx`) — use `bg-accent` for primary buttons, `text-positive`/`text-negative` for indicators, indigo focus rings
+- [X] T025 [P] [US4] Apply new theme to form components (`app/_components/add-expense-form.tsx`, `app/_components/debit-form.tsx`, `app/_components/budget-manager.tsx`) — use `bg-accent` for primary buttons, `text-positive`/`text-negative` for indicators, indigo focus rings
 
 **Step 6d — Apply theme to list/display components**
 
-- [ ] T026 [P] [US4] Apply new theme to list and display components (`app/_components/expense-list.tsx`, `app/_components/person-list.tsx`, `app/_components/person-summary.tsx`) — update card containers, category badges with cyan accent, positive/negative for balances
+- [X] T026 [P] [US4] Apply new theme to list and display components (`app/_components/expense-list.tsx`, `app/_components/person-list.tsx`, `app/_components/person-summary.tsx`) — update card containers, category badges with cyan accent, positive/negative for balances
 
 **Step 6e — Apply theme to page layouts and navigation**
 
-- [ ] T027 [P] [US4] Apply new theme to page layouts (`app/budgets/page.tsx`, `app/expenses/page.tsx`, `app/persons/page.tsx`, `app/page.tsx`) — update page wrapper styling, section headings
-- [ ] T028 [P] [US4] Apply new theme to navigation and utility components (`app/layout.tsx` nav links, `app/_components/person-nav.tsx`, `app/_components/month-picker.tsx`, `app/_components/theme-toggle.tsx`) — use accent color for active nav links, updated button styles
+- [X] T027 [P] [US4] Apply new theme to page layouts (`app/budgets/page.tsx`, `app/expenses/page.tsx`, `app/persons/page.tsx`, `app/page.tsx`) — update page wrapper styling, section headings
+- [X] T028 [P] [US4] Apply new theme to navigation and utility components (`app/layout.tsx` nav links, `app/_components/person-nav.tsx`, `app/_components/month-picker.tsx`, `app/_components/theme-toggle.tsx`) — use accent color for active nav links, updated button styles
 
 **Checkpoint**: UI redesign applied across all pages — consistent fintech-style appearance
 

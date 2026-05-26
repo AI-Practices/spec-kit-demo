@@ -48,20 +48,20 @@ export default function PersonSummaryView({ personId }: PersonSummaryViewProps) 
   return (
     <div>
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="p-4 border border-zinc-200 rounded-lg dark:border-zinc-700">
+        <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
           <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide mb-1">Total Credited</p>
-          <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{formatAmount(summary.totalCredited)}</p>
+          <p className="text-xl font-bold text-positive">{formatAmount(summary.totalCredited)}</p>
         </div>
-        <div className="p-4 border border-zinc-200 rounded-lg dark:border-zinc-700">
+        <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
           <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide mb-1">Total Debited</p>
-          <p className="text-xl font-bold text-red-600 dark:text-red-400">{formatAmount(summary.totalDebited)}</p>
+          <p className="text-xl font-bold text-negative">{formatAmount(summary.totalDebited)}</p>
         </div>
-        <div className="p-4 border border-zinc-200 rounded-lg dark:border-zinc-700">
+        <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
           <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wide mb-1">Balance</p>
           <p className={`text-xl font-bold tabular-nums ${
             summary.balance >= 0
-              ? "text-emerald-600 dark:text-emerald-400"
-              : "text-red-600 dark:text-red-400"
+              ? "text-positive"
+              : "text-negative"
           }`}>
             {formatAmount(summary.balance)}
           </p>
@@ -82,14 +82,14 @@ export default function PersonSummaryView({ personId }: PersonSummaryViewProps) 
           {summary.transactions.map((tx) => (
             <div
               key={tx.id}
-              className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
+              className="flex items-center justify-between p-3 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700"
             >
               <div className="flex items-center gap-3">
                 <span
                   className={`inline-block px-2 py-0.5 text-xs font-medium rounded ${
                     tx.type === "credit"
-                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                      : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                      ? "bg-positive/10 text-positive"
+                      : "bg-negative/10 text-negative"
                   }`}
                 >
                   {tx.type === "credit" ? "Credit" : "Debit"}
@@ -108,7 +108,7 @@ export default function PersonSummaryView({ personId }: PersonSummaryViewProps) 
               </div>
               <button
                 onClick={() => handleDelete(tx.id)}
-                className="px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:text-red-800 hover:bg-red-50 rounded dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30"
+                className="px-2 py-1 text-xs font-medium text-negative transition-colors hover:text-negative hover:bg-negative/10 rounded"
               >
                 Delete
               </button>

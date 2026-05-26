@@ -110,7 +110,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
     cells.push(
       <div
         key={key}
-        className="p-2 border border-zinc-200 dark:border-zinc-700 rounded min-h-[60px] cursor-pointer hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+        className="p-2 border border-border rounded min-h-[60px] cursor-pointer hover:bg-accent/5 transition-colors"
         onClick={() => !isEditing && handleCellClick(day)}
       >
         <div className="text-xs text-zinc-400 dark:text-zinc-500 mb-1">{day}</div>
@@ -124,12 +124,12 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
             onFocus={(e) => e.target.select()}
             onBlur={() => handleSave(day)}
             onKeyDown={(e) => handleKeyDown(e, day)}
-            className="w-full text-xs border border-zinc-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-zinc-400 dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-100"
+            className="w-full text-xs border border-zinc-300 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-accent dark:bg-zinc-700 dark:border-zinc-600 dark:text-zinc-100"
             autoFocus
             onClick={(e) => e.stopPropagation()}
           />
         ) : (
-          <div className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+          <div className="text-sm font-medium text-positive">
             {amount ? formatAmount(amount) : ""}
           </div>
         )}
@@ -148,7 +148,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={prevMonth}
-          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-zinc-300"
+          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-accent/5 focus:outline-none focus:ring-2 focus:ring-accent dark:border-zinc-600 dark:text-zinc-300"
         >
           &larr; Prev
         </button>
@@ -160,7 +160,7 @@ export default function MonthlyGrid({ personId, personName }: MonthlyGridProps) 
         </span>
         <button
           onClick={nextMonth}
-          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700 dark:text-zinc-300"
+          className="px-3 py-1 text-sm border border-zinc-300 rounded transition-colors hover:bg-accent/5 focus:outline-none focus:ring-2 focus:ring-accent dark:border-zinc-600 dark:text-zinc-300"
         >
           Next &rarr;
         </button>

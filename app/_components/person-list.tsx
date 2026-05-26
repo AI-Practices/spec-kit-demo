@@ -123,21 +123,21 @@ export default function PersonList() {
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter name..."
             required
-            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
           />
           {duplicateWarning && (
             <p className="text-sm text-amber-600 mt-1 dark:text-amber-400">{duplicateWarning}</p>
           )}
           {errors?.name && (
-            <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.name[0]}</p>
+            <p className="text-sm text-negative mt-1 dark:text-negative">{errors.name[0]}</p>
           )}
           {errors?._form && (
-            <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors._form[0]}</p>
+            <p className="text-sm text-negative mt-1 dark:text-negative">{errors._form[0]}</p>
           )}
         </div>
         <button
           type="submit"
-          className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-500"
+          className="px-4 py-2 bg-accent text-white text-sm font-medium rounded transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent"
         >
           Add Person
         </button>
@@ -175,7 +175,7 @@ export default function PersonList() {
           {persons.map((person) => (
             <div
               key={person.id}
-              className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
+              className="flex items-center justify-between p-3 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700"
             >
               <div className="flex items-center gap-3 flex-1 min-w-0">
                 {editingId === person.id ? (
@@ -205,8 +205,8 @@ export default function PersonList() {
                 <span
                   className={`text-sm font-medium tabular-nums ${
                     person.balance >= 0
-                      ? "text-emerald-600 dark:text-emerald-400"
-                      : "text-red-600 dark:text-red-400"
+                      ? "text-positive"
+                      : "text-negative"
                   }`}
                 >
                   {formatAmount(person.balance)}
@@ -214,21 +214,21 @@ export default function PersonList() {
                 {editingId === person.id ? (
                   <button
                     onClick={() => saveEdit(person.id)}
-                    className="px-2 py-1 text-xs font-medium text-emerald-600 transition-colors hover:text-emerald-800 hover:bg-emerald-50 rounded dark:text-emerald-400 dark:hover:text-emerald-300 dark:hover:bg-emerald-900/30"
+                    className="px-2 py-1 text-xs font-medium text-positive transition-colors hover:text-positive hover:bg-positive/10 rounded"
                   >
                     Save
                   </button>
                 ) : (
                   <button
                     onClick={() => startEdit(person)}
-                    className="px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-700 hover:bg-zinc-100 rounded dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-700"
+                    className="px-2 py-1 text-xs font-medium text-zinc-500 transition-colors hover:text-accent hover:bg-accent/5 rounded"
                   >
                     Edit
                   </button>
                 )}
                 <button
-                  onClick={() => confirmDelete(person.id)}
-                  className="px-2 py-1 text-xs font-medium text-red-600 transition-colors hover:text-red-800 hover:bg-red-50 rounded dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/30"
+                    onClick={() => confirmDelete(person.id)}
+                  className="px-2 py-1 text-xs font-medium text-negative transition-colors hover:text-negative hover:bg-negative/10 rounded"
                 >
                   Delete
                 </button>

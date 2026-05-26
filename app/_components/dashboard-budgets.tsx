@@ -58,7 +58,7 @@ export default function DashboardBudgets() {
 
   if (summaries.length === 0) {
     return (
-      <div className="p-4 border border-zinc-200 rounded-lg dark:border-zinc-700">
+      <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
           No budgets set for this month.{" "}
           <Link href="/budgets" className="text-zinc-700 underline hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
@@ -79,7 +79,7 @@ export default function DashboardBudgets() {
         {summaries.map((s) => (
           <div
             key={s.category}
-            className="p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
+            className="p-3 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">

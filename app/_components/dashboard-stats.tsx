@@ -80,7 +80,7 @@ export default function DashboardStats() {
       <DashboardBudgets />
 
       {persons.length > 0 && (
-        <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
+        <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
           <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Person Wallet</p>
           <div className="flex items-baseline gap-4">
             <div>
@@ -88,12 +88,12 @@ export default function DashboardStats() {
               <p className="text-xl font-bold text-zinc-900 dark:text-zinc-100">{persons.length}</p>
             </div>
             <div>
-              <p className="text-xs text-zinc-400 dark:text-zinc-500">Total Balance</p>
-              <p className={`text-xl font-bold tabular-nums ${
-                totalWalletBalance >= 0
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-red-600 dark:text-red-400"
-              }`}>
+                <p className="text-xs text-zinc-400 dark:text-zinc-500">Total Balance</p>
+                <p className={`text-xl font-bold tabular-nums ${
+                  totalWalletBalance >= 0
+                    ? "text-positive"
+                    : "text-negative"
+                }`}>
                 {formatAmount(totalWalletBalance)}
               </p>
             </div>
@@ -103,12 +103,12 @@ export default function DashboardStats() {
 
       {expenses.length > 0 && (
         <>
-          <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
+          <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
             <p className="text-sm text-zinc-500 mb-1 dark:text-zinc-400">Total Spending</p>
             <p className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{formatAmount(total)}</p>
           </div>
 
-          <div className="p-4 border border-zinc-200 rounded-lg bg-zinc-50 transition-colors hover:bg-zinc-100 dark:bg-zinc-800 dark:border-zinc-700 dark:hover:bg-zinc-700/50">
+          <div className="p-4 border border-border rounded-lg bg-surface shadow-sm dark:bg-zinc-800 dark:border-zinc-700">
             <p className="text-sm text-zinc-500 mb-3 dark:text-zinc-400">Spending by Category</p>
             {chartData ? (
               <div className="max-w-xs mx-auto">

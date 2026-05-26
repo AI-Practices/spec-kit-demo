@@ -115,7 +115,7 @@ export default function BudgetManager() {
 
       <form
         action={handleSetBudget}
-        className="p-4 border border-zinc-200 rounded-lg space-y-4 dark:border-zinc-700"
+        className="p-4 border border-border rounded-lg bg-surface shadow-sm space-y-4 dark:bg-zinc-800 dark:border-zinc-700"
       >
         <div>
           <label htmlFor="category" className="block text-sm font-medium mb-1 dark:text-zinc-300">
@@ -127,7 +127,7 @@ export default function BudgetManager() {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
-            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
           >
             <option value="">Select a category</option>
             {CATEGORY_LABELS.map((cat) => (
@@ -135,7 +135,7 @@ export default function BudgetManager() {
             ))}
           </select>
           {errors?.category && (
-            <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.category[0]}</p>
+            <p className="text-sm text-negative mt-1 dark:text-negative">{errors.category[0]}</p>
           )}
         </div>
 
@@ -153,22 +153,22 @@ export default function BudgetManager() {
             onChange={(e) => setAmount(e.target.value)}
             onFocus={(e) => e.target.select()}
             required
-            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:border-zinc-600 dark:focus:ring-zinc-500"
+            className="w-full border border-zinc-300 rounded px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-accent dark:bg-zinc-800 dark:border-zinc-600"
           />
           {errors?.amount && (
-            <p className="text-sm text-red-600 mt-1 dark:text-red-400">{errors.amount[0]}</p>
+            <p className="text-sm text-negative mt-1 dark:text-negative">{errors.amount[0]}</p>
           )}
         </div>
 
         {errors?.storage && (
-          <p className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded dark:bg-red-900/30 dark:text-red-400">
+          <p className="text-sm text-negative bg-negative/10 px-3 py-2 rounded dark:bg-negative/10">
             {errors.storage[0]}
           </p>
         )}
 
         <button
           type="submit"
-          className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-500"
+          className="px-4 py-2 bg-accent text-white text-sm font-medium rounded transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent dark:bg-accent dark:text-white dark:hover:bg-accent-hover"
         >
           {category && monthBudgets.some((b) => b.category === category) ? "Update Budget" : "Set Budget"}
         </button>
@@ -185,7 +185,7 @@ export default function BudgetManager() {
               className="flex items-center justify-between p-3 border border-zinc-200 rounded-lg transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800/50"
             >
               <div className="flex items-center gap-3">
-                <span className="inline-block px-2 py-0.5 text-xs font-medium bg-zinc-100 text-zinc-700 rounded dark:bg-zinc-700 dark:text-zinc-300">
+                <span className="inline-block px-2 py-0.5 text-xs font-medium bg-chart-cyan/10 text-chart-cyan rounded">
                   {budget.category}
                 </span>
                 <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -213,14 +213,14 @@ export default function BudgetManager() {
         </div>
       )}
 
-      <div className="border-t border-zinc-200 pt-6 dark:border-zinc-700">
+      <div className="border-t border-border pt-6">
         <h2 className="text-lg font-semibold text-zinc-800 mb-4 dark:text-zinc-200">
           Monthly Overview
         </h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-zinc-200 dark:border-zinc-700">
+              <tr className="border-b border-border">
                 <th className="text-left py-2 pr-4 font-medium text-zinc-500 dark:text-zinc-400">Category</th>
                 <th className="text-right py-2 px-2 font-medium text-zinc-500 dark:text-zinc-400">Budget</th>
                 <th className="text-right py-2 px-2 font-medium text-zinc-500 dark:text-zinc-400">Spent</th>
@@ -230,7 +230,7 @@ export default function BudgetManager() {
             </thead>
             <tbody>
               {summaries.map((s) => (
-                <tr key={s.category} className="border-b border-zinc-100 dark:border-zinc-800">
+                <tr key={s.category} className="border-b border-border/50">
                   <td className="py-3 pr-4 text-zinc-900 dark:text-zinc-100">{s.category}</td>
                   <td className="text-right py-3 px-2 text-zinc-700 dark:text-zinc-300">
                     {s.budgetAmount !== null ? formatAmount(s.budgetAmount) : "Not set"}

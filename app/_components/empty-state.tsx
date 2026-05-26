@@ -14,7 +14,7 @@ export default function EmptyState() {
       </p>
       <Link
         href="/expenses"
-        className="inline-block px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded transition-colors hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 dark:focus:ring-zinc-500"
+        className="inline-block px-4 py-2 bg-accent text-white text-sm font-medium rounded transition-colors hover:bg-accent-hover focus:outline-none focus:ring-2 focus:ring-accent"
       >
         Add Your First Expense
       </Link>

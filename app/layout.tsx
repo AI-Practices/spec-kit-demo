@@ -31,17 +31,17 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <nav className="flex items-center gap-6 px-6 py-4 border-b border-zinc-200 dark:border-zinc-700">
-          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
+        <nav className="flex items-center gap-6 px-6 py-4 border-b border-border bg-surface/80 dark:bg-zinc-900/80">
+          <Link href="/" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
             Dashboard
           </Link>
-          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
+          <Link href="/expenses" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
             Expenses
           </Link>
-          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
+          <Link href="/budgets" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
             Budgets
           </Link>
-          <Link href="/persons" className="text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-zinc-100 transition-colors">
+          <Link href="/persons" className="text-sm font-medium text-zinc-600 hover:text-accent dark:text-zinc-300 dark:hover:text-accent transition-colors">
             Persons
           </Link>
           <div className="ml-auto flex items-center gap-3">
