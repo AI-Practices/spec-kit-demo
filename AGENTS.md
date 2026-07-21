@@ -13,7 +13,7 @@ Key Next.js 16 changes (see docs for full list):
 <!-- END:nextjs-agent-rules -->
 
 <!-- SPECKIT START -->
-The current implementation plan lives in `specs/008-excel-wallet-transactions/plan.md`.
+The current implementation plan lives in `specs/009-excel-financial-summary/plan.md`.
 Read it before making code changes.
 <!-- SPECKIT END -->
 
